@@ -478,13 +478,6 @@ a.lazy-image{
 }
 
 /* Adrian added CSS */
-
-
-
-
-
-
-
-
-
-
+.header-menu ul.main-menu .parent a.nav-link[href="#"] {
+    cursor: default !important;
+}
