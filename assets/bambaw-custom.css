@@ -481,3 +481,60 @@ a.lazy-image{
 .header-menu ul.main-menu .parent a.nav-link[href="#"] {
     cursor: default !important;
 }
+
+#custom_mfp-btn-prev, 
+#custom_mfp-btn-next {
+    position: absolute;
+    top: 50%;
+    margin-top: -124px;
+    z-index: 500;
+    cursor: pointer;
+    background: transparent;
+    color: transparent;
+    border: none;
+    outline: none;
+    opacity: 0.75;
+    -webkit-text-size-adjust: none;
+    font-size: 1px;
+    letter-spacing: -1px;
+    -webkit-transition: opacity 0.2s ease-out;
+    -moz-transition: opacity 0.2s ease-out;
+    -ms-transition: opacity 0.2s ease-out;
+    -o-transition: opacity 0.2s ease-out;
+    transition: opacity 0.2s ease-out;
+}
+
+#custom_mfp-btn-prev {
+    left: -20%;
+    padding: 100px 20px 100px 0;
+}
+
+#custom_mfp-btn-next{
+    right: -20%;
+    padding: 100px 0 100px 20px;
+}
+
+#custom_mfp-btn-prev:before, 
+#custom_mfp-btn-next:before {
+    display: inline;
+    font-family: "icons";
+    text-decoration: none;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    font-size: 3rem;
+    letter-spacing: normal;
+    color: #999;
+}
+
+#custom_mfp-btn-prev:before {
+    content: "\e901";
+}
+
+#custom_mfp-btn-next:before {
+    content: "\e902";
+}
