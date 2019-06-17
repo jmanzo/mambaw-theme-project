@@ -1,0 +1,141 @@
+<html>
+<head>
+    <style>
+        h1 {
+            padding: 5px;
+            font-size: 20px;
+            height: 20px;
+        }
+
+        body {
+            margin: 0;
+            padding: 10px;
+            color: #000000 !important;
+            background: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a {
+            color: #2c0aff;
+        }
+
+    </style>
+    <script>
+        function closePopup(url) {
+            parent.postMessage(("undefined" === typeof url) ? "GeolizrClosePopup" : "GeolizrClosePopup=>" + url, document.referrer);
+        }
+
+        function redirectPopup(url) {
+            parent.postMessage(("undefined" === typeof url) ? "GeolizrRedirect" : "GeolizrRedirect=>" + url, document.referrer);
+        }
+
+        function parsePathLinks() {
+            var tmpAnchor = document.createElement('a');
+            tmpAnchor.href = document.referrer;
+            var referrer = tmpAnchor.host;
+            var links = document.getElementsByClassName('path-link');
+            for(var i = 0; i < links.length; i++) {
+                var link = links[i];
+
+                var path = document.referrer.replace(tmpAnchor.protocol + '//' + referrer, '');
+                var baseLinkUrl = link.href.replace('/%path%', '%path%');
+                var targetUrl = baseLinkUrl.replace('%path%', path);
+
+                var asMethod = link.getAttribute('data-as-method') === "true";
+                var withClose = link.getAttribute('data-with-close') === "true";
+                if(asMethod) {
+                    if(withClose)
+                        link.href = "javascript:closePopup('" + targetUrl + "');";
+                    else
+                        link.href = "javascript:redirectPopup('" + targetUrl + "');";
+                } else {
+                    link.href = targetUrl;
+                }
+            }
+        }
+
+        function lyChangeLanguage(lycode) {
+            parent.postMessage( "GeolizrLyChangeLanguage=>" + lycode, document.referrer );
+        }
+
+        function getElementsByClassName(node,classname) {
+            if (node.getElementsByClassName) { // use native implementation if available
+                return node.getElementsByClassName(classname);
+            } else {
+                return (function getElementsByClass(searchClass,node) {
+                    if ( node == null )
+                        node = document;
+                    var classElements = [],
+                        els = node.getElementsByTagName("*"),
+                        elsLen = els.length,
+                        pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)"), i, j;
+
+                    for (i = 0, j = 0; i < elsLen; i++) {
+                        if ( pattern.test(els[i].className) ) {
+                            classElements[j] = els[i];
+                            j++;
+                        }
+                    }
+                    return classElements;
+                })(classname, node);
+            }
+        }
+
+        function getGeodata(name, def) {
+            if(def === null) def = "";
+            if(geoData[name]) {
+                return geoData[name]
+            } else {
+                return def;
+            }
+        }
+
+        var geoData = {};
+
+        // Create IE + others compatible event handler
+        var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+        var eventCatcher = window[eventMethod];
+        var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+        // Listen to message from child window
+        eventCatcher(messageEvent,function(e) {
+            var data = e.data || "";
+            if(data.startsWith("GeolizrData") === true) {
+                e.preventDefault();
+
+                var dataArray = data.split("=>");
+                geoData = JSON.parse(dataArray[1]);
+
+                var elements = getElementsByClassName(document, 'geolizr');
+                for(var a = 0; a < elements.length; a++) {
+                    var element = elements[a];
+                    var result = getGeodata(element.attributes['data-geolizr'].value);
+                    element.innerHTML = result;
+                }
+            }
+        },false);
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var links = document.getElementsByClassName('path-link');
+            if(links.length > 0) parsePathLinks();
+        });
+
+    </script>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+<link href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css" rel="stylesheet" />
+<h1 style="text-align: center; height: auto;">Indonesian visitors</h1>
+
+<p>Hey there! Thanks for checking out our Bambaw&nbsp;store.&nbsp;</p>
+
+<p>The website doesn’t ship to&nbsp;Indonesia yet. For deliveries to Indonesia please visit our Amazon US store.</p>
+
+<div style="text-align: center">&nbsp;</div>
+
+<div style="text-align: center"><a class="pure-button pure-button-primary" href="https://amzn.to/2kG5NeW" style="width: 150px;" target="_blank">Amazon US store</a>&nbsp;<a class="pure-button" onclick="closePopup();" style="width: 150px;" target="_blank">Close Popup</a></div>
+
+<div style="text-align: center"></div>
+
+</body>
+</html>

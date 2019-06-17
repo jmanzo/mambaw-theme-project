@@ -1,0 +1,7 @@
+{% if request.host %}{% assign host = request.host %}{% assign domains = shop.metafields.language_domains %}{% for domain in domains %}{% assign key = domain | first %}{% assign value = domain | last | split: ',' %}{% if value contains host %}{% assign language = key %}{% endif %}{% endfor %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% else %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% endif %}{% assign cl = language %}
+<select id="desktop-languages-switcher" class="lang-switcher ly-languages-switcher">{% for language in shop.metafields.languages %}{% assign key = language | first %}{% assign value = language | last %}{% if key != "default" %}<option value="{{ key }}"{% if key == cl %} selected="selected"{% endif %}>{{ value }}</option>{% endif %}{% endfor %}</select>
+<script>
+  $('.lang-switcher').change(function() {
+    langify.helper.changeLanguage($(this).val());
+  });
+</script>

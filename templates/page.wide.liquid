@@ -1,0 +1,11 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /templates/page.liquid -->
+<div class="wrapper page-margin">
+  <div class="grid">
+    <div class="grid__item one-whole">
+      <h1 class="text-center h2">{% comment %}ly_code_replace_for_[ page.title ]_begin{% endcomment %}{% include 'ly-title' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h1>
+      <div class="rte">
+        {% comment %}ly_code_replace_for_[ page.content ]_begin{% endcomment %}{% include 'ly-content' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+      </div>
+    </div>
+  </div>
+</div>

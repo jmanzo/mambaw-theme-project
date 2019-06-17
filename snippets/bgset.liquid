@@ -1,0 +1,23 @@
+{%- if image.width != blank -%}
+    {% if image.width > 180 %}{{ image | img_url: '180x' }} <ly-as-9216191>180w</ly-as-9216191> {{ 180 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 360 %}{{ image | img_url: '360x' }} <ly-as-9216193>360w</ly-as-9216193> {{ 360 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 540 %}{{ image | img_url: '540x' }} <ly-as-9216194>540w</ly-as-9216194> {{ 540 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 720 %}{{ image | img_url: '720x' }} <ly-as-9216195>720w</ly-as-9216195> {{ 720 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 900 %}{{ image | img_url: '900x' }} <ly-as-9216196>900w</ly-as-9216196> {{ 900 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 1080 %}{{ image | img_url: '1080x' }} <ly-as-9216197>1080w</ly-as-9216197> {{ 1080 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 1296 %}{{ image | img_url: '1296x' }} <ly-as-9216198>1296w</ly-as-9216198> {{ 1296 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 1512 %}{{ image | img_url: '1512x' }} <ly-as-9216199>1512w</ly-as-9216199> {{ 1512 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 1728 %}{{ image | img_url: '1728x' }} <ly-as-9216200>1728w</ly-as-9216200> {{ 1728 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 1950 %}{{ image | img_url: '1950x' }} <ly-as-9216201>1950w</ly-as-9216201> {{ 1950 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 2100 %}{{ image | img_url: '2100x' }} <ly-as-9216202>2100w</ly-as-9216202> {{ 2100 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 2260 %}{{ image | img_url: '2260x' }} <ly-as-9216203>2260w</ly-as-9216203> {{ 2260 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 2450 %}{{ image | img_url: '2450x' }} <ly-as-9216204>2450w</ly-as-9216204> {{ 2450 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 2700 %}{{ image | img_url: '2700x' }} <ly-as-9216205>2700w</ly-as-9216205> {{ 2700 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 3000 %}{{ image | img_url: '3000x' }} <ly-as-9216206>3000w</ly-as-9216206> {{ 3000 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 3350 %}{{ image | img_url: '3350x' }} <ly-as-9216207>3350w</ly-as-9216207> {{ 3350 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 3750 %}{{ image | img_url: '3750x' }} <ly-as-9216208>3750w</ly-as-9216208> {{ 3750 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {% if image.width > 4100 %}{{ image | img_url: '4100x' }} <ly-as-9216209>4100w</ly-as-9216209> {{ 4100 | divided_by: image.aspect_ratio | round }}<ly-as-9216192>h,</ly-as-9216192>{% endif %}
+    {{ image | img_url: 'master' }} {{ image.width }}w {{ image.height }}h
+{%- else -%}
+    {{ image }}
+{%- endif -%}

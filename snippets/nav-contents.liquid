@@ -1,0 +1,58 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="mobile-wrapper">
+  <div class="header-cart__wrapper">
+    <a href="/cart" class="CartToggle header-cart"></a>
+    <span class="header-cart__bubble cartCount{% if cart.item_count < 1 %} hidden-count{% endif %}"></span>
+  </div>
+  <div class="logo-wrapper{% if section.settings.logo %} logo-wrapper--image{% endif %}">
+    {% if template == 'index' %}
+    <h1 class="h4 header-logo" itemscope itemtype="http://schema.org/Organization">
+      {% else %}
+      <div class="h4 header-logo" itemscope itemtype="http://schema.org/Organization">
+        {% endif %}
+        {% if section.settings.logo %}
+        <a href="/" itemprop="url">
+          {% capture image_size %}{{ section.settings.logo_max_limit }}x{% endcapture %}
+          <img src="{{ section.settings.logo | img_url: image_size }}"
+               srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+               alt="{{ section.settings.logo.alt | default: langify_shop_name }}"
+               class="logo-image"
+               itemprop="logo">
+        </a>
+        {% else %}
+        <a href="/" itemprop="url">{{ langify_shop_name }}</a>
+        {% endif %}
+        {% if template == 'index' %}
+        </h1>
+      {% else %}
+      </div>
+    {% endif %}
+  </div>
+  <a href class="menuToggle header-hamburger"{% if nav-contents == 'mobile' %} aria-haspopup="true" aria-expanded="false" aria-controls="ariaHamburger"{% endif %}></a>
+</div>
+<div class="header-menu nav-wrapper">
+  {% comment %}
+  List out your main-menu linklist (default)
+
+  More info on linklists:
+  - http://docs.shopify.com/themes/liquid-variables/linklists
+  {% endcomment %}
+  <ul class="main-menu accessibleNav" role="navigation" aria-label="primary"{% if nav-contents == 'mobile' %} id="ariaHamburger" {% endif %}>
+    {% if section.settings.main_menu_linklist %}
+    {% assign main_menu_linklist = section.settings.main_menu_linklist %}
+    {% else %}
+    {% assign main_menu_linklist = 'main-menu' %}
+    {% endif %}
+    {% for link in linklists[main_menu_linklist].links %}
+    {% include 'nav-item' %}
+    {% endfor %}
+    <li>
+      {% include 'desktop-languages-switcher' %}
+    </li>
+    <li class="cart-text-link">
+      <a href="/cart" class="CartToggle">
+        <span class="cartCost {% if cart.item_count < 1 %} hidden-count {% endif %}"><span class="desktop-bubble">{{ cart.item_count }}</span></span>
+      </a>
+    </li>
+  </ul>
+</div>

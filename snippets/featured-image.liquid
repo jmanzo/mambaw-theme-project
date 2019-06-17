@@ -1,0 +1,18 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{% assign src = featured-image| escape %}
+{% if src contains '<img' %}
+  {% assign src = src | split: 'src="' %}
+  {% assign src = src[1] | split: '"' %}
+  {% assign src = src[0] | remove: '//cdn' %}
+  {% assign src = src | remove: 'http:http://';; %}
+  {% assign src = src | remove: 'https:' %}
+  {% unless image-size == empty %}
+    {% capture replacement %}_{{image-size}}.{% endcapture %}
+    {% assign sizes = 'pico icon thumb small compact medium large grande 1024x1024 2048x2048' | split:' ' %}
+    {% for size in sizes %}
+      {% capture search %}_{{size}}.{% endcapture %}
+      {% assign src = src | replace:search,replacement %}
+    {% endfor %}
+  {% endunless %}
+  {{ src | prepend: '<ly-as-9216724>//cdn</ly-as-9216724>';;}}
+{% endif %}
+{% assign image-size = '' %}

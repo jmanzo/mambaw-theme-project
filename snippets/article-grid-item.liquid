@@ -1,0 +1,25 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="grid__item {{ blog_grid }}">
+  <a class="blog__link" href="{{ article.url }}">
+    <div class="blog__article blog__article--card{% if article.image %} blog__article--image{% endif %}">
+      {% if article.image %}
+        {%- assign img_object = article.image -%}
+        <div class="blog__article__overlay lazyload" data-bgset="{% include 'bgset', image: img_object %}"></div>
+        <noscript>
+          <div class="blog__article__overlay" style="background-image: url('{{ article.image | img_url: 'x540' }}')"></div>
+        </noscript>
+      {% endif %}
+      <div class="blog__article__content equalHeightColumn">
+        <h3 class="h3 blog__article__title">{% comment %}ly_code_replace_for_[ article.title ]_begin{% endcomment %}{% include 'ly-title' with article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h3>
+        <div class="rte blog__article__text">
+          {% unless article.image %}
+            {% if article.excerpt == blank %}
+              {% comment %}ly_code_replace_for_[ article.content | strip_html | truncate: 200 ]_begin{% endcomment %}{% include 'ly-content' with article %}{{ ly_translation | strip_html | truncate: 200 }}{% comment %}ly_code_replace_end{% endcomment %}
+            {% else %}
+              {% comment %}ly_code_replace_for_[ article.excerpt | strip_html | truncate: 200 ]_begin{% endcomment %}{% include 'ly-excerpt' with article %}{{ ly_translation | strip_html | truncate: 200 }}{% comment %}ly_code_replace_end{% endcomment %}
+            {% endif %}
+          {% endunless %}
+        </div>
+      </div>
+    </div>
+  </a>
+</div>

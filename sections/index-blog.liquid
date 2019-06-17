@@ -1,0 +1,87 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /sections/index-blog.liquid -->
+{%- assign blog = blogs[section.settings.homepage_blog] -%}
+{%- assign post_count = section.settings.homepage_blog_count -%}
+
+
+{% case post_count %}
+  {% when 0 %}
+  {% when 1 %}
+    {% assign blog_grid = 'large--one-half push--large--one-quarter' %}
+  {% when 2 %}
+    {% assign blog_grid = 'large--one-half' %}
+  {% when 3 %}
+    {% assign blog_grid = 'large--one-third' %}
+{% endcase %}
+
+
+<div class="homepage-blog {{ section.settings.homepage_blog_color }}" data-section-id="{{ section.id }}" data-section-type="index-blog">
+  <div class="wrapper">
+      {% unless section.settings.title == '' %}
+        <h4 class="home__subtitle">{{ section.settings.title | escape }}</h4>
+      {% endunless %}
+      <div class="grid-uniform">
+        {% unless blog == blank or blog.empty? %}
+          {% for article in blog.articles limit:post_count %}
+            {% include 'article-grid-item' %}
+          {% endfor %}
+        {% else %}
+          {% for i in (1..post_count) %}
+            <div class="grid__item {{ blog_grid }}">
+              <div class="blog__link">
+                <div class="blog__article blog__article--card">
+                  <div class="rte blog__article__content equalHeightColumn">
+                    <h3 class="h3 blog__article__title">{% comment %}ly_i18n_replace_for_[ 'home_page.onboarding.blog_title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'home_page.onboarding.blog_title' | t }}{% endcapture %}{% include 'ly-static-string' with '9216135' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h3>
+                    <p>{% comment %}ly_i18n_replace_for_[ 'home_page.onboarding.blog_excerpt' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'home_page.onboarding.blog_excerpt' | t }}{% endcapture %}{% include 'ly-static-string' with '9216136' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endunless %}
+      </div>
+    </div>
+  </div>
+{% schema %}
+{
+  "name": "Blog posts",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "News"
+    },
+    {
+      "type": "blog",
+      "id": "homepage_blog",
+      "label": "Blog"
+    },
+    {
+      "type":    "range",
+      "id":      "homepage_blog_count",
+      "min":     1,
+      "max":     3,
+      "step":    1,
+      "label":   "Number of posts to display",
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "homepage_blog_color",
+      "label": "Background color",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

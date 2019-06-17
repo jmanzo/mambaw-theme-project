@@ -1,0 +1,67 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /snippets/search-result.liquid -->
+{% comment %}
+
+  This snippet defines the default structure of each search result.
+
+  'item' refers to the result, but typically mimics the product liquid tag,
+  so you can access product liquid tags with {{ item.XXX }}.
+
+  Remember that results aren't specific to products, so don't depend on
+  a featured image or item.type. Pages, for example, have a blank item.type.
+
+  Product liquid tag info:
+   - http://docs.shopify.com/themes/liquid-variables/product
+
+{% endcomment %}
+
+<div class="grid">
+
+  {% if item.featured_image %}
+    {% comment %}
+      We have a featured_image, so it's likely a product
+    {% endcomment %}
+    <div class="grid__item one-sixth">
+      <a href="{{ item.url }}" title="{% comment %}ly_code_replace_for_[ item.title | escape ]_begin{% endcomment %}{% include 'ly-title' with item %}{{ ly_translation | escape }}{% comment %}ly_code_replace_end{% endcomment %}">
+        {{ item.featured_image.src | img_url: 'medium' | img_tag: item.featured_image.alt }}
+      </a>
+    </div>
+    <div class="grid__item five-sixths">
+  {% elsif item.object_type == 'article' and item.image %}
+    <div class="grid__item one-sixth">
+     <a href="{{ item.url }}" title="{% comment %}ly_code_replace_for_[ item.title | escape ]_begin{% endcomment %}{% include 'ly-title' with item %}{{ ly_translation | escape }}{% comment %}ly_code_replace_end{% endcomment %}">
+       {% comment %}ly_code_replace_for_[ item | image_url: 'medium' | img_tag: item.title ]_begin{% endcomment %}{% include 'ly-title' with item %}{{ item | image_url: 'medium' | img_tag: ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+     </a>
+    </div>
+    <div class="grid__item five-sixths">
+  {% else %}
+    <div class="grid__item five-sixths push--one-sixth">
+  {% endif %}
+
+    <p class="h3--body">{% comment %}ly_code_replace_for_[ item.title | link_to: item.url ]_begin{% endcomment %}{% include 'ly-title' with item %}{{ ly_translation | link_to: item.url }}{% comment %}ly_code_replace_end{% endcomment %}</p>
+
+    {% comment %}
+      To show the price, let's pull what was already done on the product page,
+      but change product to item.
+    {% endcomment %}
+    {% if item.compare_at_price > item.price %}
+      <span class="on-sale h5 money" itemprop="price">
+        {% assign geolizr_price =  item.price  %}{% include 'geolizr-currency' with geolizr_price %}{{ item.price | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}
+      </span>
+      <s>
+        <span class="money">{% assign geolizr_price =  item.compare_at_price_max  %}{% include 'geolizr-currency' with geolizr_price %}{{ item.compare_at_price_max | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}</span>
+      </s>
+    {% else %}
+      <h5 itemprop="price">
+        <span class="money">{% assign geolizr_price =  item.price  %}{% include 'geolizr-currency' with geolizr_price %}{{ item.price | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}</span>
+      </h5>
+    {% endif %}
+
+    {% comment %}
+      Get a brief excerpt of raw text from the page/product
+    {% endcomment %}
+    <p>{% comment %}ly_code_replace_for_[ item.content | strip_html | truncatewords: 50 | replace: '<p>[split]</p>', '[split]' | replace: '[split]', '' ]_begin{% endcomment %}{% include 'ly-content' with item %}{{ ly_translation | strip_html | truncatewords: 50 | replace: '<p>[split]</p>', '[split]' | replace: '[split]', '' }}{% comment %}ly_code_replace_end{% endcomment %}</p>
+  </div>
+
+</div>
+
+{% unless forloop.last %}<hr>{% endunless %}

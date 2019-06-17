@@ -1,0 +1,18 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{% if shop.metafields.geolizr.popup_widget_enabled == 'true' %}
+    <script>
+        Geolizr.init(function($) {
+            Geolizr.getGeoData(function(geoData) {
+                Geolizr.popups = {% comment %}ly_code_replace_for_[ shop.metafields.geolizr.popups ]_begin{% endcomment %}{% if request.host %}{% assign host = request.host %}{% assign domains = shop.metafields.language_domains %}{% for domain in domains %}{% assign key = domain | first %}{% assign value = domain | last | split: ',' %}{% if value contains host %}{% assign language = key %}{% endif %}{% endfor %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% else %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% endif %}{% assign ns = language | append: 'geolizr' %}{% assign key = 'popups' %}{% if shop.metafields[ns][key] %}{% assign ly_translation = shop.metafields[ns][key] %}{% else %}{% assign ly_translation =  shop.metafields.geolizr.popups  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %};
+                Geolizr.countryToPopups = {% comment %}ly_code_replace_for_[ shop.metafields.geolizr.country_to_popup ]_begin{% endcomment %}{% if request.host %}{% assign host = request.host %}{% assign domains = shop.metafields.language_domains %}{% for domain in domains %}{% assign key = domain | first %}{% assign value = domain | last | split: ',' %}{% if value contains host %}{% assign language = key %}{% endif %}{% endfor %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% else %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% endif %}{% assign ns = language | append: 'geolizr' %}{% assign key = 'country_to_popup' %}{% if shop.metafields[ns][key] %}{% assign ly_translation = shop.metafields[ns][key] %}{% else %}{% assign ly_translation =  shop.metafields.geolizr.country_to_popup  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %};
+
+                var popup = Geolizr.popups[Geolizr.countryToPopups[geoData.country.code]];
+                var regionPopup = Geolizr.popups[Geolizr.countryToPopups[geoData.country.code + '-' + geoData.region]];
+                if(regionPopup)
+                    popup = regionPopup;
+
+                Geolizr.assetUrl = "{% comment %}ly_asset_replace_for_[ 'geolizr-popup-[popupId].html' | asset_url ]_begin{% endcomment %}{% assign ly_asset = 'geolizr-popup-[popupId].html' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  }}{% comment %}ly_asset_replace_end{% endcomment %}";
+                Geolizr.popup(popup, Geolizr.assetUrl);
+            });
+        });
+    </script>
+{% endif %}

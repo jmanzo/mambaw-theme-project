@@ -1,0 +1,108 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /snippets/social-meta-tags.liquid -->
+{% comment %}
+  Add Facebook and Pinterest Open Graph meta tags to product pages
+  for friendly Facebook sharing and Pinterest pinning.
+
+  More info Open Graph meta tags
+    - https://developers.facebook.com/docs/opengraph/using-objects/
+    - https://developers.pinterest.com/rich_pins/
+
+  Use the Facebook Open Graph Debugger for validation (and cache clearing)
+    - http://developers.facebook.com/tools/debug
+
+  Validate your Pinterest rich pins
+    - https://developers.pinterest.com/rich_pins/validator/
+{% endcomment %}
+{% if template == 'index' %}
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="{{ langify_title }}">
+	<meta property="og:description" content="{{ langify_description }}">
+	{% if settings.social_home_image %}
+		<meta property="og:image" content="http:{{ settings.social_home_image | img_url: 'grande' }}">
+		<meta property="og:image:secure_url" content="https:{{ settings.social_home_image | img_url: 'grande' }}">
+		<meta property="twitter:image" content="http:{{ settings.social_home_image | img_url: 'grande' }}">
+	{% endif %}
+{% elsif template contains 'product' %}
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="{% comment %}ly_code_replace_for_[ product.title | strip_html | escape ]_begin{% endcomment %}{% include 'ly-title' with product %}{{ ly_translation | strip_html | escape }}{% comment %}ly_code_replace_end{% endcomment %}">
+  {% for image in product.images limit:3 %}
+  <meta property="og:image" content="http:{{ image.src | img_url: 'grande' }}">
+  <meta property="og:image:secure_url" content="https:{{ image.src | img_url: 'grande' }}">
+  {% endfor %}
+  <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html | escape }}">
+  <meta property="og:price:currency" content="{{ shop.currency }}">
+{% elsif template contains 'article' %}
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{% comment %}ly_code_replace_for_[ article.title | strip_html | escape ]_begin{% endcomment %}{% include 'ly-title' with article %}{{ ly_translation | strip_html | escape }}{% comment %}ly_code_replace_end{% endcomment %}">
+  {% assign img_tag = '<' | append: 'img' %}
+  {% if article.image %}
+  <meta property="og:image" content="{{ article.image | img_url: 'grande' | prepend: 'http:' }}">
+  <meta property="og:image:secure_url" content="{{ article.image | img_url: 'grande' | prepend: 'https:' }}">
+  {% elsif article.content contains img_tag %}
+    {% assign src = article.content | split: 'src="' %}
+    {% assign src = src[1] | split: '"' | first | remove: 'https:' | remove: 'http:' %}
+    {% if src %}
+  <meta property="og:image" content="http:{{ src }}">
+  <meta property="og:image:secure_url" content="https:{{ src }}">
+    {% endif %}
+  {% endif %}
+{% else %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ langify_title | escape }}">
+{% endif %}
+{% if langify_description %}
+  <meta property="og:description" content="{{ langify_description | escape }}">
+{% endif %}
+  <meta property="og:url" content="{{ canonical_langify_url }}">
+  <meta property="og:site_name" content="{{ langify_shop_name }}">
+
+
+{% comment %}
+  This snippet renders meta data needed to create a Twitter card
+  for products and articles.
+
+  Your cards must be approved by Twitter to be activated
+    - https://dev.twitter.com/docs/cards/validation/validator
+
+  More information:
+   - https://dev.twitter.com/docs/cards/types/product-card
+   - https://dev.twitter.com/docs/cards/types/summary-card
+{% endcomment %}
+
+{% comment %}
+  Twitter user name of the site, based on theme settings
+{% endcomment %}
+{% if settings.twittercard_handle != blank %}
+  <meta name="twitter:site" content="{{ settings.twittercard_handle }}">
+{% endif %}
+{% if template contains 'product' %}
+  <meta name="twitter:card" content="product">
+  <meta name="twitter:title" content="{% comment %}ly_code_replace_for_[ product.title ]_begin{% endcomment %}{% include 'ly-title' with product %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}">
+  <meta name="twitter:description" content="{% comment %}ly_code_replace_for_[ product.description | strip_html | truncatewords: 140, '' | replace: '[split]', '' | escape ]_begin{% endcomment %}{% include 'ly-description' with product %}{{ ly_translation | strip_html | truncatewords: 140, '' | replace: '[split]', '' | escape }}{% comment %}ly_code_replace_end{% endcomment %}">
+  <meta name="twitter:image" content="https:{{ product.featured_image.src | img_url: 'medium' }}">
+  <meta name="twitter:image:width" content="240">
+  <meta name="twitter:image:height" content="240">
+  <meta name="twitter:label1" content="Price">
+  {% assign geolizr_price =  product.price  %}{% include 'geolizr-currency' with geolizr_price %}{% assign price = product.price | money_with_currency | prepend: geolizr_prepend_code | append: geolizr_append_code | strip_html | escape %}
+  <meta name="twitter:data1" content="{% if product.price_varies %}{% comment %}ly_i18n_replace_for_[ 'products.general.from_text_html' | t: price: price ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.general.from_text_html' | t: price: price }}{% endcapture %}{% include 'ly-static-string' with '9253133' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = price  %}{% assign ly_template = ly_template | replace: '[[price]]', replacement %}{% if escape_content %}{{ ly_template}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% else %}{{ price }}{% endif %}">
+  {% if product.vendor != blank %}
+  <meta name="twitter:label2" content="Brand">
+  <meta name="twitter:data2" content="{% comment %}ly_code_replace_for_[ product.vendor | escape ]_begin{% endcomment %}{% include 'ly-vendor' with product %}{{ ly_translation | escape }}{% comment %}ly_code_replace_end{% endcomment %}">
+  {% else %}
+  <meta name="twitter:label2" content="Availability">
+  <meta name="twitter:data2" content="In stock">
+  {% endif %}
+{% elsif template contains 'article' %}
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{% comment %}ly_code_replace_for_[ article.title ]_begin{% endcomment %}{% include 'ly-title' with article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}">
+  <meta name="twitter:description" content="{% comment %}ly_code_replace_for_[ article.excerpt_or_content | strip_html | truncatewords: 140, '' | escape ]_begin{% endcomment %}{% include 'ly-excerpt_or_content' with article %}{{ ly_translation | strip_html | truncatewords: 140, '' | escape }}{% comment %}ly_code_replace_end{% endcomment %}">
+  {% if article.image %}
+  <meta property="twitter:image" content="{{ article.image | img_url: 'grande' | prepend: 'http:' }}">
+  {% elsif article.content contains "<img" %}
+    {% assign src = article.content | split: 'src="' %}
+    {% assign src = src[1] | split: '"' | first | replace: '//cdn', 'http://cdn' | replace: 'http:http://', 'http://' | remove: 'https:' %}
+    {% if src %}
+  <meta property="twitter:image" content="{{ src }}">
+    {% endif %}
+  {% endif %}
+{% endif %}

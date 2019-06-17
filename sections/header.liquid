@@ -1,0 +1,145 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+ 
+ 
+
+  <div class="header__wrapper" data-section-id="{{ section.id }}" data-section-type="header">
+    <div id="hidenav">
+
+  {% if section.settings.header_enable_account or section.settings.header_enable_search or section.settings.header_message != '' %}
+  <div class="info-bar showMobile">
+    <div class="wrapper text-center">
+
+      {% if shop.customer_accounts_enabled and section.settings.header_enable_account %}
+        <div class="header-account-link">
+          <a href="/account"><img src="{% comment %}ly_asset_replace_for_[ 'account.svg' | asset_url ]_begin{% endcomment %}{% assign ly_asset = 'account.svg' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  }}{% comment %}ly_asset_replace_end{% endcomment %}"></a>
+        </div>
+      {% endif %}
+
+      {% if section.settings.header_message != '' %}
+      <div class="header-message uppercase{% if section.settings.header_enable_account or section.settings.header_enable_search %} header-message--crowded{% endif %}">
+        {% if section.settings.header_message_url != blank %}
+          <a href="{{ section.settings.header_message_url }}">{{ section.settings.header_message | escape }}</a>
+        {% else %}
+          {{ section.settings.header_message | escape }}
+        {% endif %}
+      </div>
+      {% endif %}
+
+      {% if section.settings.header_enable_search %}
+        <div class="header-search__wrapper">
+          <div class="header-search">
+            <form action="/search" method="get" class="input-group search" role="search">
+              {% if section.settings.search_only_products %}<input type="hidden" name="type" value="product">{% endif %}
+              <input class="search-bar" type="search" name="q">
+              <button type="submit" class="btn search-btn"></button>
+            </form>
+          </div>
+        </div>
+      {% endif %}
+
+      
+      
+    </div>
+  </div>
+  {% endif %}
+
+  <header class="site-header {{ section.settings.height }}" role="banner">
+      <div class="wrapper">
+        {% include 'search-bar' %}
+      <div class="nav--desktop">
+        {% include 'nav-contents' %}
+      </div>
+      <div class="nav--mobile">
+        {% include 'nav-contents' %}
+      </div>
+    </div>
+  </header>
+</div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type":    "range",
+      "id":      "logo_max_limit",
+      "min":     5,
+      "max":     495,
+      "step":    5,
+      "unit":    "px",
+      "label":   "Custom logo width",
+      "default": 250
+    },
+    {
+      "type": "link_list",
+      "label": "Menu",
+      "id": "main_menu_linklist"
+    },
+    {
+      "type": "select",
+      "label": "Height",
+      "id": "height",
+      "default": "header--medium",
+      "options": [
+        { "value": "header--small", "label": "Small"},
+        { "value": "header--medium", "label": "Medium"},
+        { "value": "header--large", "label": "Large"},
+        { "value": "header--xl", "label": "Extra Large"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Meganav image"
+    },
+    {
+      "type": "image_picker",
+      "id": "meganav_image",
+      "label": "Meganav image",
+      "info": "500 x 800px .jpg max"
+    },
+    {
+      "type": "url",
+      "id": "meganav_link",
+      "label": "Meganav Image Link"
+    },
+    {
+      "type": "header",
+      "content": "Top Bar"
+    },
+    {
+      "type": "text",
+      "id": "header_message",
+      "label": "Announcement text",
+      "info": "45 characters or less recommended"
+    },
+    {
+      "type": "url",
+      "id": "header_message_url",
+      "label": "Announcement link"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_enable_account",
+      "default": true,
+      "label": "Show account link in header"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_enable_search",
+      "default": true,
+      "label": "Show search in header"
+    },
+    {
+      "type": "checkbox",
+      "id": "search_only_products",
+      "label": "Only search products"
+    }
+  ]
+}
+{% endschema %}

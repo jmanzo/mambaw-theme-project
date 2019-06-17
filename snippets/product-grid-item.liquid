@@ -1,0 +1,115 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- assign on_sale = false -%}
+{%- if product.compare_at_price > product.price -%}
+  {%- assign on_sale = true -%}
+{%- endif -%}
+
+{%- assign sold_out = true -%}
+{%- if product.available -%}
+  {%- assign sold_out = false -%}
+{%- endif -%}
+
+{%- assign new_product = false -%}
+{%- assign published_date = product.published_at | date: "%s"  -%}
+{%- assign now_date = 'now' | date: "%s" -%}
+{%- assign age_in_days = now_date | minus: published_date | divided_by: 60 | divided_by: 60 | divided_by: 12 -%}
+{%- if age_in_days < settings.tag_new_limit -%}
+  {%- assign new_product = true -%}
+{%- endif -%}
+
+{%- assign sellout_tag = false -%}
+{%- if sold_out and settings.tag_sellout -%}
+  {%- assign sellout_tag = true -%}
+{%- endif -%}
+
+{%- assign new_tag = false -%}
+{%- if new_product and settings.tag_new -%}
+  {%- assign new_tag = true -%}
+{%- endif -%}
+
+{%- assign sale_tag = false -%}
+{%- if on_sale and settings.tag_sale -%}
+  {%- assign sale_tag = true -%}
+{%- endif -%}
+
+{%- assign tagged = false -%}
+{%- if sellout_tag or new_tag or sale_tag -%}
+  {%- assign tagged = true -%}
+{%- endif -%}
+
+{%- capture sticker -%}
+  {%- if tagged %}
+    {%- if sellout_tag -%}
+      <div class="sticker sticker--sold">{% comment %}ly_i18n_replace_for_[ 'products.product.sold_out' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.sold_out' | t }}{% endcapture %}{% include 'ly-static-string' with '9253082' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</div>
+    {%- elsif sale_tag -%}
+      <div class="sticker sticker--sale">{% comment %}ly_i18n_replace_for_[ 'products.product.sale' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.sale' | t }}{% endcapture %}{% include 'ly-static-string' with '9253083' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</div>
+    {%- elsif new_tag -%}
+      <div class="sticker sticker--new">{% comment %}ly_i18n_replace_for_[ 'products.product.new' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.new' | t }}{% endcapture %}{% include 'ly-static-string' with '9253084' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- assign product_img = product.featured_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+{%- assign double_img = false -%}
+{% if product.images[1].src and settings.image_hover_enable %}
+  {%- assign double_img = true -%}
+{% endif %}
+
+{%- if settings.image_autoheight_enable -%}
+{%- assign top_offset =  1 | divided_by: product.featured_image.aspect_ratio | times: 100 | divided_by: 2 -%}
+{%- capture auto_height -%}
+  {%- if product.featured_image.aspect_ratio < 1 -%}
+    <ly-as-9253079>style="width:</ly-as-9253079>{{ product.featured_image.aspect_ratio | times: 100 }}<ly-as-9253080>%; margin: 0 auto;"</ly-as-9253080>
+  {%- else -%}
+    <ly-as-9253081>style="padding:</ly-as-9253081>{{ 50 | minus: top_offset }}% 0;"
+  {%- endif -%}
+{%- endcapture -%}
+{%- endif -%}
+
+<div class="grid__item {{ grid_offset }} {{ grid_width_small }} {{ grid_width_medium }} {{ grid_width_large }}{% if on_sale %} on-sale{% endif %}{% if tagged %} tagged{% endif %} product-grid-item">
+  <div {{ auto_height }}>
+    <a href="{{ product.url }}" class="lazy-image{% if double_img %} double__image{% endif %}" style="padding-top:{{ 1 | divided_by: product.featured_image.aspect_ratio | times: 100}}%; background-image:  url('{{ product.featured_image | img_url: '1x1' }}');">
+      <img class="lazyload fade-in"
+        alt="{% comment %}ly_code_replace_for_[ product.featured_image.alt | default: product.title  ]_begin{% endcomment %}{% include 'ly-title' with product %}{{ product.featured_image.alt | default: ly_translation  }}{% comment %}ly_code_replace_end{% endcomment %}"
+        data-src="{{ product_img }}"
+        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480, 5800]"
+        data-aspectratio="{{  product.featured_image.aspect_ratio }}"
+        data-sizes="auto"/>
+      {% if double_img %}
+        <div class="collection__image__bottom lazyload" data-bgset="{% include 'bgset', image: product.images[1] %}"></div>
+      {% endif %}
+      {{ sticker }}
+    </a>
+  </div>
+  <noscript>
+    <a href="{{ product.url }}">
+      <img src="{{ product.featured_image | img_url: '360x' }}" alt="{% comment %}ly_code_replace_for_[ product.featured_image.alt | default: product.title  ]_begin{% endcomment %}{% include 'ly-title' with product %}{{ product.featured_image.alt | default: ly_translation  }}{% comment %}ly_code_replace_end{% endcomment %}">
+    </a>
+  </noscript>
+  <div class="figcaption {{ settings.product_grid_style }} {{ settings.collection_text_alignment | default: 'text-center' }}">
+    <a href="{{ product.url | capitalize }}">
+      <p class="h6 name_wrapper">
+        {% comment %}ly_code_replace_for_[ product.title ]_begin{% endcomment %}{% include 'ly-title' with product %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+      </p>
+      <p class="price_wrapper">
+        <span class="price{% if on_sale %} on-sale{% endif %}">
+          {% if product.price_varies %}{% comment %}ly_i18n_replace_for_[ 'products.general.from' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.general.from' | t }}{% endcapture %}{% include 'ly-static-string' with '9253085' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} {% endif %}
+          <span class="money">{% assign geolizr_price =  product.price  %}{% include 'geolizr-currency' with geolizr_price %}{{ product.price | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}</span>
+        </span>
+        {% if sold_out %}
+        <br /><em>{% comment %}ly_i18n_replace_for_[ 'products.product.sold_out' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.sold_out' | t }}{% endcapture %}{% include 'ly-static-string' with '9253082' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</em>
+        {% endif %}
+        {% if on_sale %}
+        <span class="compare-at">
+          <span class="money">{% assign geolizr_price =  product.compare_at_price  %}{% include 'geolizr-currency' with geolizr_price %}{{ product.compare_at_price | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}</span>
+        </span>
+        {% endif %}
+        {% if product.metafields.spr.reviews %}
+          <br />
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+        {% endif %}
+      </p>
+    </a>
+  </div>
+</div>

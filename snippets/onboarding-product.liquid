@@ -1,0 +1,29 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="wrapper">
+  <div class="grid product-single">
+    <div class="grid__item large--two-thirds text-center">
+      <div class="product__slides product-single__photos">
+        <div class="product__photo">
+          {{ 'product-5' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      </div>
+    </div>
+    <div class="grid__item large--one-third">
+      <div class="text-center">
+        <h5 class="product__price uppercase h5">
+          <span class="money"><span>{% assign geolizr_price =  '1999'  %}{% include 'geolizr-currency' with geolizr_price %}{{ '1999' | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}</span></span>
+        </h5>
+        <h1 class="h2">{% comment %}ly_i18n_replace_for_[ 'home_page.onboarding.product_title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'home_page.onboarding.product_title' | t }}{% endcapture %}{% include 'ly-static-string' with '9253062' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h1>
+        <div class="product-description rte" itemprop="description">
+          {% comment %}ly_i18n_replace_for_[ 'home_page.onboarding.product_description' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'home_page.onboarding.product_description' | t }}{% endcapture %}{% include 'ly-static-string' with '9253063' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+        </div>
+      </div>
+      <div class="add-to-cart__wrapper">
+        <button class="btn btn--large btn--full btn--clear uppercase addToCart">
+          <span>{% comment %}ly_i18n_replace_for_[ 'products.product.add_to_cart' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.add_to_cart' | t }}{% endcapture %}{% include 'ly-static-string' with '9253064' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+          <span class="unicode"><ly-as-9253061>&#x2022</ly-as-9253061></span>
+          <span class="add-to-cart__price money"><span>{% assign geolizr_price =  '1999'  %}{% include 'geolizr-currency' with geolizr_price %}{{ '1999' | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}</span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

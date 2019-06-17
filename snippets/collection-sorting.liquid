@@ -1,0 +1,40 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /snippets/collection-sorting.liquid -->
+<div class="form-horizontal">
+  <label for="SortBy" class="uppercase">{% comment %}ly_i18n_replace_for_[ 'collections.sorting.title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'collections.sorting.title' | t }}{% endcapture %}{% include 'ly-static-string' with '9216702' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} </label>
+  <select name="SortBy" id="SortBy" class="uppercase">
+    <option value="manual">{% comment %}ly_i18n_replace_for_[ 'collections.sorting.featured' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'collections.sorting.featured' | t }}{% endcapture %}{% include 'ly-static-string' with '9216703' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</option>
+    <option value="best-selling">{% comment %}ly_i18n_replace_for_[ 'collections.sorting.best_selling' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'collections.sorting.best_selling' | t }}{% endcapture %}{% include 'ly-static-string' with '9216704' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</option>
+    <option value="title-ascending">{% comment %}ly_i18n_replace_for_[ 'collections.sorting.az' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'collections.sorting.az' | t }}{% endcapture %}{% include 'ly-static-string' with '9216705' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</option>
+    <option value="title-descending">{% comment %}ly_i18n_replace_for_[ 'collections.sorting.za' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'collections.sorting.za' | t }}{% endcapture %}{% include 'ly-static-string' with '9216706' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</option>
+    <option value="price-ascending">{% comment %}ly_i18n_replace_for_[ 'collections.sorting.price_ascending' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'collections.sorting.price_ascending' | t }}{% endcapture %}{% include 'ly-static-string' with '9216707' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</option>
+    <option value="price-descending">{% comment %}ly_i18n_replace_for_[ 'collections.sorting.price_descending' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'collections.sorting.price_descending' | t }}{% endcapture %}{% include 'ly-static-string' with '9216708' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</option>
+    <option value="created-descending">{% comment %}ly_i18n_replace_for_[ 'collections.sorting.date_descending' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'collections.sorting.date_descending' | t }}{% endcapture %}{% include 'ly-static-string' with '9216709' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</option>
+    <option value="created-ascending">{% comment %}ly_i18n_replace_for_[ 'collections.sorting.date_ascending' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'collections.sorting.date_ascending' | t }}{% endcapture %}{% include 'ly-static-string' with '9216710' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</option>
+  </select>
+</div>
+
+<script>
+  /*============================================================================
+    Inline JS because collection liquid object is only available
+    on collection pages, and not external JS files
+  ==============================================================================*/
+  Shopify.queryParams = {};
+  if (location.search.length) {
+    for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+      aKeyValue = aCouples[i].split('=');
+      if (aKeyValue.length > 1) {
+        Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+      }
+    }
+  }
+
+  $(function() {
+    $('#SortBy')
+      .val('{{ collection.sort_by | default: collection.default_sort_by }}')
+      .bind('change', function() {
+        Shopify.queryParams.sort_by = jQuery(this).val();
+        location.search = jQuery.param(Shopify.queryParams).replace(/\+/g, '%20');
+      }
+    );
+  });
+</script>

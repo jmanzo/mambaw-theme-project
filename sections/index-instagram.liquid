@@ -1,0 +1,130 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{% assign instagram_grid_width_large = 'large--one-sixth' %}
+{% assign instagram_grid_width_medium = 'medium--one-third' %}
+{% assign instagram_grid_width_small = 'small--one-half' %}
+
+{% case section.settings.instagram_grid_setting_large %}
+  {% when 2 %}
+    {% assign instagram_grid_width_large = 'large--one-half' %}
+  {% when 3 %}
+    {% assign instagram_grid_width_large = 'large--one-third' %}
+  {% when 4 %}
+    {% assign instagram_grid_width_large = 'large--one-quarter' %}
+  {% when 5 %}
+    {% assign instagram_grid_width_large = 'large--one-fifth' %}
+  {% when 6 %}
+    {% assign instagram_grid_width_large = 'large--one-sixth' %}
+{% endcase %}
+
+{% case section.settings.instagram_grid_setting_medium %}
+  {% when 2 %}
+    {% assign instagram_grid_width_medium = 'medium--one-half' %}
+  {% when 3 %}
+    {% assign instagram_grid_width_medium = 'medium--one-third' %}
+  {% when 4 %}
+    {% assign instagram_grid_width_medium = 'medium--one-quarter' %}
+{% endcase %}
+
+{% case section.settings.instagram_grid_setting_small %}
+  {% when 2 %}
+    {% assign instagram_grid_width_small = 'small--one-half' %}
+  {% when 3 %}
+    {% assign instagram_grid_width_small = 'small--one-third' %}
+  {% when 4 %}
+    {% assign instagram_grid_width_small = 'small--one-quarter' %}
+{% endcase %}
+
+<div class="homepage-instagram {{ section.settings.homepage_instagram_color }}" data-section-id="{{ section.id }}" data-section-type="instagram">
+  {% unless section.settings.title == '' %}
+    <h4 class="home__subtitle">{{ section.settings.title | escape }}</h4>
+  {% endunless %}
+  {% if section.settings.token == '' %}
+    <div class="grid-uniform grid--full">
+      {% for i in (1..section.settings.instagram_photo_count) %}
+        <div class="grid__item {{instagram_grid_width_large}} {{instagram_grid_width_medium}} {{instagram_grid_width_small}}">
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div id="Instafeed-{{ section.id }}" class="grid-uniform" data-count="{{ section.settings.instagram_photo_count }}" data-access-token="{{ section.settings.token }}" data-grid="{{instagram_grid_width_large}} {{instagram_grid_width_medium}} {{instagram_grid_width_small}}"></div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Instagram feed",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Instagram"
+    },
+    {
+      "type": "select",
+      "id": "homepage_instagram_color",
+      "label": "Background color",
+      "default": "homepage--white",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    },
+    {
+      "type": "text",
+      "id": "token",
+      "label": "Instagram access token",
+      "info": "[Generate Instagram access token](http://help.groupthought.com/article/25-create-an-instagram-token)"
+    },
+    {
+      "type":    "range",
+      "id":      "instagram_photo_count",
+      "min":     1,
+      "max":     12,
+      "step":    1,
+      "label":   "Number of photos to display",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Photos per row"
+    },
+    {
+      "type":    "range",
+      "id":      "instagram_grid_setting_large",
+      "min":     2,
+      "max":     6,
+      "step":    1,
+      "label":   "Desktop",
+      "default": 6
+    },
+    {
+      "type":    "range",
+      "id":      "instagram_grid_setting_medium",
+      "min":     2,
+      "max":     4,
+      "step":    1,
+      "label":   "Tablet",
+      "default": 3
+    },
+    {
+      "type":    "range",
+      "id":      "instagram_grid_setting_small",
+      "min":     2,
+      "max":     4,
+      "step":    1,
+      "label":   "Mobile",
+      "default": 2
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram feed",
+      "category": "Social"
+    }
+  ]
+}
+{% endschema %}

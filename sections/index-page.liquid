@@ -1,0 +1,66 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /sections/index-page.liquid -->
+
+<div class="homepage-page {{ section.settings.homepage_page_color }}" data-section-id="{{ section.id }}" data-section-type="index-page">
+  <div class="wrapper">
+    <div class="grid">
+      {% if section.settings.home_page_content != blank or page.empty? %}
+        {% assign page = pages[section.settings.home_page_content] %}
+        {% assign page_src = page.content | escape %}
+        {% if page_src contains '<img' %}
+          {% assign homepage_page_grid = 'one-whole' %}
+        {% else %}
+          {% assign homepage_page_grid = 'large--five-sixths push--large--one-twelfth' %}
+        {% endif %}
+        <div class="grid__item {{ homepage_page_grid }}">
+          {% if section.settings.home_page_show_title %}
+            <h4 class="home__subtitle">{% comment %}ly_code_replace_for_[ page.title | escape ]_begin{% endcomment %}{% include 'ly-title' with page %}{{ ly_translation | escape }}{% comment %}ly_code_replace_end{% endcomment %}</h4>
+          {% endif %}
+          <div class="rte homepage-page__content">
+            {% comment %}ly_code_replace_for_[ page.content ]_begin{% endcomment %}{% include 'ly-content' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+          </div>
+        </div>
+      {% else %}
+        <div class="grid__item large--five-sixths push--large--one-twelfth">
+          <div class="rte homepage-page__content">
+            {% comment %}ly_i18n_replace_for_[ 'home_page.onboarding.no_content' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'home_page.onboarding.no_content' | t }}{% endcapture %}{% include 'ly-static-string' with '9216153' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    {
+      "id": "home_page_content",
+      "type": "page",
+      "label": "Page"
+    },
+    {
+      "type": "checkbox",
+      "id": "home_page_show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "homepage_page_color",
+      "label": "Background color",
+      "default": "homepage--white",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Page",
+    "category": "Text"
+  }]
+}
+{% endschema %}

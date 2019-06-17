@@ -1,0 +1,30 @@
+{% if shop.metafields.geolizr.currency_widget_enabled == 'true' %}
+
+    {% include 'geolizr-json' json:shop.metafields.geolizr.currency_widget_options key:'auto_insert_currency_switcher' default:'false' %}
+    {% if json_value == 'true' %}
+        {% include 'geolizr-currency-switcher' position: 'geolizr-absolute-auto' arrowDirection: 'up' %}
+    {% endif %}
+
+    <!--suppress JSUnusedAssignment, JSUnresolvedVariable -->
+    <script>
+        Geolizr.currency_widget_enabled = true;
+        Geolizr.init(function() {
+            Geolizr.loadScript('//cdn.shopify.com/s/javascripts/currencies.js', function () {
+                Geolizr.shopCurrency = '{{ shop.currency }}';
+                Geolizr.currenciesToLanguages = {{ shop.metafields.geolizr.currencies_to_language_codes }};
+                Geolizr.currencyOptions = {{ shop.metafields.geolizr.currency_widget_options }};
+                Geolizr.amount = '{{ amount }}';
+                Geolizr.Currency = Currency;
+                Geolizr.moneyFormats = {{ shop.metafields.geolizr.supported_currencies }};
+                if (!Geolizr.moneyFormats[Geolizr.shopCurrency]) {
+                    Geolizr.moneyFormats[Geolizr.shopCurrency] = {
+                        moneyFormat: '{{ shop.money_format | replace: "'", "\\'" }}',
+                        moneyWithCurrencyFormat: '{{ shop.money_with_currency_format | replace: "'", "\\'" }}'
+                    }
+                }
+
+                Geolizr.currencyConverterInit();
+            });
+        });
+    </script>
+{% endif %}

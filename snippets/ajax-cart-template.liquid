@@ -1,0 +1,83 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /snippets/ajax-cart-template.liquid -->
+{% comment %}
+
+  This snippet provides the default handlebars.js templates for
+  the ajaxify cart plugin. Use the raw liquid tags to keep the
+  handlebar.js template tags as available hooks.
+
+{% endcomment %}
+  <script id="CartTemplate" type="text/template">
+  <form action="/cart{% comment %}ly_checkout_begin{% endcomment %}{% if request.host %}{% assign host = request.host %}{% assign domains = shop.metafields.language_domains %}{% for domain in domains %}{% assign key = domain | first %}{% assign value = domain | last | split: ',' %}{% if value contains host %}{% assign language = key %}{% endif %}{% endfor %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% else %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% endif %}{% assign checkout_code = shop.metafields.language_codes[language] %}{% if checkout_code %}{% assign checkout_code = '?locale=' | append: checkout_code %}{{ checkout_code }}{% endif %}{% comment %}ly_checkout_end{% endcomment %}" method="post" novalidate>
+    {% raw %}
+      <div class="ajaxcart__inner">
+        {{#items}}
+        <div class="ajaxcart__product">
+          <div class="ajaxcart__row" data-id="{{id}}">
+            <div class="grid">
+              <div class="grid__item large--two-thirds">
+                <div class="grid">
+                  <div class="grid__item one-quarter">
+                    <a href="{{url}}" class="ajaxcart__product-image"><img src="{{img}}" alt=""></a>
+                  </div>
+                  <div class="grid__item three-quarters">
+                    <a href="{{url}}" class="h4">{{name}}</a>
+                    {{#if variantion }}
+                    <p>{{variation}}</p>
+                    {{/if}}
+                  </div>
+                </div>
+              </div>
+              <div class="grid__item large--one-third">
+                <div class="grid">
+                  <div class="grid__item one-third">
+                    <div class="ajaxcart__qty">
+                      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus" data-id="{{id}}" data-qty="{{itemMinus}}">−</button>
+                      <input type="text" class="ajaxcart__qty-num" value="{{itemQty}}" min="0" data-id="{{id}}" aria-label="quantity" pattern="[0-9]*">
+                      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus" data-id="{{id}}" data-qty="{{itemAdd}}">+</button>
+                    </div>
+                  </div>
+                  <div class="grid__item one-third text-center">
+                    <p>{{price}}</p>
+                  </div>
+                  <div class="grid__item one-third text-right">
+                    <p>
+                      <small><a href="/cart/change?id={{id}}&quantity=0" class="ajaxcart__remove" data-id="{{id}}">{% endraw %}{% comment %}ly_i18n_replace_for_[ 'cart.general.remove' | t]_begin{% endcomment %}{% capture ly_template %}{{ 'cart.general.remove' | t}}{% endcapture %}{% include 'ly-static-string' with '9216177' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% raw %}</a></small>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/items}}
+      </div>
+      <div class="ajaxcart__row text-right medium-down--text-center">
+        <span class="h3">{% endraw %}{% comment %}ly_i18n_replace_for_[ 'cart.general.subtotal' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'cart.general.subtotal' | t }}{% endcapture %}{% include 'ly-static-string' with '9216178' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% raw %} {{totalPrice}}</span>
+        <input type="submit" class="{{btnClass}}" name="checkout" value="{% endraw %}{% comment %}ly_i18n_replace_for_[ 'cart.general.checkout' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'cart.general.checkout' | t }}{% endcapture %}{% include 'ly-static-string' with '9216179' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% raw %}">
+      </div>
+    </form>
+  {% endraw %}
+  </script>
+  <script id="DrawerTemplate" type="text/template">
+  {% raw %}
+    <div id="AjaxifyDrawer" class="ajaxcart ajaxcart--drawer">
+      <div id="AjaxifyCart" class="ajaxcart__content {{wrapperClass}}"></div>
+    </div>
+  {% endraw %}
+  </script>
+  <script id="ModalTemplate" type="text/template">
+  {% raw %}
+    <div id="AjaxifyModal" class="ajaxcart ajaxcart--modal">
+      <div id="AjaxifyCart" class="ajaxcart__content"></div>
+    </div>
+  {% endraw %}
+  </script>
+  <script id="AjaxifyQty" type="text/template">
+  {% raw %}
+    <div class="ajaxcart__qty">
+      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus" data-id="{{id}}" data-qty="{{itemMinus}}">−</button>
+      <input type="text" class="ajaxcart__qty-num" value="{{itemQty}}" min="0" data-id="{{id}}" aria-label="quantity" pattern="[0-9]*">
+      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus" data-id="{{id}}" data-qty="{{itemAdd}}">+</button>
+    </div>
+  {% endraw %}
+  </script>

@@ -1,0 +1,394 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /templates/page.contact-custom.liquid -->
+<div class="wrapper page-margin" data-section-id="{{ section.id }}">
+
+  <div class="grid">
+
+    <div class="grid__item large--two-thirds push--large--one-sixth">
+
+      <h1 class="text-center h2">{% comment %}ly_code_replace_for_[ page.title ]_begin{% endcomment %}{% include 'ly-title' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h1>
+
+      <div class="rte">
+        {% comment %}ly_code_replace_for_[ page.content ]_begin{% endcomment %}{% include 'ly-content' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+      </div>
+
+      {% if section.settings.title != blank %}
+        <h4 class="home__subtitle">{{ section.settings.title}}</h4>
+      {% endif %}
+
+      <div>
+        {% form 'contact' %}
+          {% if form.posted_successfully? %}
+
+            <p class="note form-success">
+              {% comment %}ly_i18n_replace_for_[ 'contact.form.post_success' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.post_success' | t }}{% endcapture %}{% include 'ly-static-string' with '9718491' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+            </p>
+          {% endif %}
+
+          {{ form.errors | default_errors }}
+
+          {% for block in section.blocks %}
+
+            {% case block.type %}
+
+              {% when 'email' %}
+                <div class="custom-form__block" {{ block.shopify_attributes }}>
+                  <label for="{{ block.settings.label }}" class="label--hidden">{{ block.settings.label }}</label>
+                  <input type="email" class="contactFormEmail" id="Form-{{ section.id }}-{{forloop.index0 }}" name="contact[email]" placeholder="{{ block.settings.label }}" autocorrect="off" autocapitalize="off" />
+                </div>
+
+              {% when 'body' %}
+                <div class="custom-form__block" {{ block.shopify_attributes }}>
+                  <label for="{{ block.settings.label }}" class="label--hidden">{{ block.settings.label }}</label>
+                  <textarea rows="10" id="Form-{{ section.id }}-{{ forloop.index0 }}" class="contactFormMessage" name="contact[body]" placeholder="{{ block.settings.label }}"></textarea>
+                </div>
+
+              {% when 'text' %}
+                <div class="custom-form__block" {{ block.shopify_attributes }}>
+                  <label for="{{ block.settings.label }}" class="label--hidden uppercase">{{ block.settings.label }}</label>
+                  <input type="text" class="contactFormText" id="Form-{{ section.id }}-{{forloop.index0 }}" name="contact[{{ block.settings.label | escape }}]" placeholder="{{ block.settings.label }}" autocapitalize="words" value="" />
+                </div>
+
+              {% when 'textarea' %}
+                <div class="custom-form__block" {{ block.shopify_attributes }}>
+                  <label for="{{ block.settings.label }}" class="label--hidden">{{ block.settings.label }}</label>
+                  <textarea rows="10" id="Form-{{ section.id }}-{{ forloop.index0 }}" class="contactFormMessage" name="contact[{{ block.settings.label | escape }}]" placeholder="{{ block.settings.label }}"></textarea>
+                </div>
+
+              {% when 'telephone' %}
+                <div class="custom-form__block" {{ block.shopify_attributes }}>
+                  <label for="{{ block.settings.label }}" class="label--hidden">{{ block.settings.label }}</label>
+                  <input type="tel" id="Form-{{ section.id }}-{{ forloop.index0 }}" class="contactFormPhone" name="contact[{{ block.settings.label | escape }}]" placeholder="{{ block.settings.label }}" pattern="[0-9\-]*" value="" />
+                </div>
+
+              {% when 'name' %}
+                <div class="custom-form__block" {{ block.shopify_attributes }}>
+                  <label for="{{ block.settings.label }}" class="label--hidden uppercase">{{ block.settings.label }}</label>
+                  <input type="text" class="contactFormText" id="Form-{{ section.id }}-{{forloop.index0 }}" name="contact[{{ block.settings.label | escape }}]" placeholder="{{ block.settings.label }}" autocapitalize="words" value="" />
+                </div>
+
+              {% when 'radio' %}
+                <div class="custom-form__block" {{ block.shopify_attributes }}>
+                  <label for="{{ block.settings.label }} "class="label uppercase">{{ block.settings.name }}:</label>
+                  {% if block.settings.label-one != blank %}
+                    <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}" class="contactFormRadio" name="contact[{{ block.settings.name | escape }}]" value="{{ block.settings.label-one }}"> {{ block.settings.label-one }}</input><br />
+                  {% endif %}
+                  {% if block.settings.label-two != blank %}
+                    <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}" class="contactFormRadio" name="contact[{{ block.settings.name | escape }}]" value="{{ block.settings.label-two }}"> {{ block.settings.label-two }}</input><br />
+                  {% endif %}
+                  {% if block.settings.label-three != blank %}
+                    <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}" class="contactFormRadio" name="contact[{{ block.settings.name | escape }}]" value="{{ block.settings.label-three }}"> {{ block.settings.label-three }}</input><br />
+                  {% endif %}
+                  {% if block.settings.label-four != blank %}
+                    <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}" class="contactFormRadio" name="contact[{{ block.settings.name | escape }}]" value="{{ block.settings.label-four }}"> {{ block.settings.label-four }}</input><br />
+                  {% endif %}
+                  {% if block.settings.label-five != blank %}
+                    <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}" class="contactFormRadio" name="contact[{{ block.settings.name | escape }}]" value="{{ block.settings.label-five }}"> {{ block.settings.label-five }}</input><br />
+                  {% endif %}
+                  {% if block.settings.label-six != blank %}
+                    <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}" class="contactFormRadio" name="contact[{{ block.settings.name | escape }}]" value="{{ block.settings.label-six }}"> {{ block.settings.label-six }}</input><br />
+                  {% endif %}
+                </div>
+
+              {% when 'checkboxHeading' %}
+                <div class="custom-form__block" {{ block.shopify_attributes }}>
+                  <label for="{{ block.settings.label }}" class="label uppercase">{{ block.settings.label }}:</label>
+                </div>
+
+              {% when 'checkbox' %}
+                <div class="custom-form__block" {{ block.shopify_attributes }}>
+                  <label for="{{ block.settings.label }}" class="label--hidden">{{ block.settings.label }}</label>
+                  <input type="checkbox" id="Form-{{ section.id }}-{{ forloop.index0 }}" class="contactFormCheckbox" name="contact[{{ block.settings.label }}]" value="{{ block.settings.label }}"> {{ block.settings.label }}</input>
+                </div>
+
+              {% when 'select' %}
+                <div class="custom-form__block" {{ block.shopify_attributes }}>
+                  <label for="{{ block.settings.label }}" class="label">{{ block.settings.name }}:</label>
+                  <select id="Form-{{ section.id }}-{{ forloop.index0 }}" class="contactFormSelect" name="contact[{{ block.settings.name }}]">
+                    {% if block.settings.label-one != blank %}
+                      <option value="{{ block.settings.label-one }}">{{ block.settings.label-one }}</option>
+                    {% endif %}
+                    {% if block.settings.label-two != blank %}
+                      <option value="{{ block.settings.label-two }}">{{ block.settings.label-two }}</option>
+                    {% endif %}
+                    {% if block.settings.label-three != blank %}
+                      <option value="{{ block.settings.label-three }}">{{ block.settings.label-three }}</option>
+                    {% endif %}
+                    {% if block.settings.label-four != blank %}
+                      <option value="{{ block.settings.label-four }}">{{ block.settings.label-four }}</option>
+                    {% endif %}
+                    {% if block.settings.label-five != blank %}
+                      <option value="{{ block.settings.label-five }}">{{ block.settings.label-five }}</option>
+                    {% endif %}
+                    {% if block.settings.label-six != blank %}
+                      <option value="{{ block.settings.label-six }}">{{ block.settings.label-six }}</option>
+                    {% endif %}
+
+                  </select>
+                </div>
+              {% else %}
+            {% endcase %}
+
+          {% endfor %}
+
+          {% assign types = '' %}
+          {% for block in section.blocks %}
+            {% assign types = types | append: block.type  %}
+          {% endfor %}
+
+          <!-- <p><ly-as-9718488>TYPES:</ly-as-9718488>{{ types }}</p> -->
+
+          {% unless types contains "email" %}
+            <label for="{{ block.settings.label }}" class="label">{{ block.settings.label }}</label>
+            <input type="email" class="contactFormEmail" id="Form-{{ section.id }}" name="contact[email]" placeholder="<ly-as-9718489>Email address (required)</ly-as-9718489>" autocorrect="off" autocapitalize="off" >
+          {% endunless  %}
+
+          {% unless types contains "body" %}
+            <label for="{{ block.settings.label }}" class="label">{{ block.settings.label }}</label>
+            <textarea rows="10" id="Form-{{ section.id }}" class="contactFormMessage" name="contact[body]" placeholder="<ly-as-9718490>Message (required)</ly-as-9718490>"></textarea>
+          {% endunless  %}
+
+          <input type="submit" class="btn right uppercase" value="{% comment %}ly_i18n_replace_for_[ 'contact.form.send' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.send' | t }}{% endcapture %}{% include 'ly-static-string' with '9718492' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+
+        {% endform %}
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Contact Form",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Form"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "email",
+        "name": "Email field",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label",
+            "default": "Email"
+          }
+        ]
+      },
+      {
+        "type": "body",
+        "name": "Body field",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "textarea",
+            "id": "label",
+            "label": "Label",
+            "default": "Message"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Text field",
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label",
+            "default": "Full Name",
+            "info": "Example: Full Name"
+          }
+        ]
+      },
+      {
+        "type": "telephone",
+        "name": "Telephone field",
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label",
+            "default": "Phone Number",
+            "info": "Example: Mobile Number"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "name": "Text area",
+        "settings": [
+          {
+            "type": "textarea",
+            "id": "label",
+            "label": "Label",
+            "default": "Enter your message",
+            "info": "Example: Enter your message"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "name": "Single checkbox",
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "default": "Newsletter One",
+            "label": "Label",
+            "info": "Example: Weekly newsletter"
+          }
+        ]
+      },
+      {
+        "type": "checkboxHeading",
+        "name": "Checkbox heading",
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "default": "Checkbox heading",
+            "label": "Label",
+            "info": "Example: Subscribe to Newsletters"
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "name": "Radio group",
+        "settings": [
+          {
+            "type": "text",
+            "id": "name",
+            "default": "Pick an option",
+            "label": "Heading",
+            "info": "Example: Choose an option"
+          },
+          {
+            "type": "text",
+            "id": "label-one",
+            "default": "Radio option 1",
+            "label": "Option one",
+            "info": "Example: Option 1"
+          },
+          {
+            "type": "text",
+            "id": "label-two",
+            "default": "Radio option 2",
+            "label": "Option two",
+            "info": "Example: Option 2"
+          },
+          {
+            "type": "text",
+            "id": "label-three",
+            "default": "Radio option 3",
+            "label": "Option three",
+            "info": "Blank if not required"
+          },
+          {
+            "type": "text",
+            "id": "label-four",
+            "default": "Radio option 4",
+            "label": "Option four",
+            "info": "Blank if not required"
+          },
+          {
+            "type": "text",
+            "id": "label-five",
+            "default": "Radio option 5",
+            "label": "Option five",
+            "info": "Blank if not required"
+          },
+          {
+            "type": "text",
+            "id": "label-six",
+            "default": "Radio option 6",
+            "label": "Option six",
+            "info": "Blank if not required"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "name": "Select group",
+        "settings": [
+          {
+            "type": "text",
+            "id": "name",
+            "default": "Select an option",
+            "label": "Instructions",
+            "info": "Example: Choose a delivery location"
+          },
+          {
+            "type": "text",
+            "id": "label-one",
+            "default": "Select option 1",
+            "label": "Option one",
+            "info": "Example: Home Address"
+          },
+          {
+            "type": "text",
+            "id": "label-two",
+            "default": "Select option 2",
+            "label": "Option two",
+            "info": "Example: Work Address"
+          },
+          {
+            "type": "text",
+            "id": "label-three",
+            "default": "Select option 3",
+            "label": "Option three",
+            "info": "Blank if not required"
+          },
+          {
+            "type": "text",
+            "id": "label-four",
+            "default": "Select option 4",
+            "label": "Option four",
+            "info": "Blank if not required"
+          },
+          {
+            "type": "text",
+            "id": "label-five",
+            "default": "Select option 5",
+            "label": "Option five",
+            "info": "Blank if not required"
+          },
+          {
+            "type": "text",
+            "id": "label-six",
+            "default": "Select option 6",
+            "label": "Option six",
+            "info": "Blank if not required"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Contact Form",
+        "category": "Form",
+        "blocks": [
+          {
+            "type": "email"
+          },
+          {
+            "type": "body"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

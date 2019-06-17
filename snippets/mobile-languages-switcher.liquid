@@ -1,0 +1,7 @@
+{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign cl = language %}
+<select id="mobile-languages-switcher">{% for language in shop.metafields.languages %}{% assign key = language | first %}{% assign value = language | last %}{% if key != "default" %}<option value="{{ key }}"{% if key == cl %} selected="selected"{% endif %}>{{ value }}</option>{% endif %}{% endfor %}</select>
+<script>
+  $('#mobile-languages-switcher').change(function() {
+  langify.helper.saveLanguage($(this).val());
+  });
+</script>

@@ -1,0 +1,15 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<script>
+  var chargeRabbitOptions = {};
+  {% for variant in product.variants %}
+    chargeRabbitOptions[{{ variant.id }}] = {};
+    {% if variant.metafields.charge_rabbit.amount %}
+      chargeRabbitOptions[{{ variant.id }}]['amount'] = {% comment %}ly_code_replace_for_[ variant.metafields.charge_rabbit.amount ]_begin{% endcomment %}{% if request.host %}{% assign host = request.host %}{% assign domains = shop.metafields.language_domains %}{% for domain in domains %}{% assign key = domain | first %}{% assign value = domain | last | split: ',' %}{% if value contains host %}{% assign language = key %}{% endif %}{% endfor %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% else %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% endif %}{% assign ns = language | append: 'charge_rabbit' %}{% assign key = 'amount' %}{% if variant.metafields[ns][key] %}{% assign ly_translation = variant.metafields[ns][key] %}{% else %}{% assign ly_translation =  variant.metafields.charge_rabbit.amount  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %};
+      chargeRabbitOptions[{{ variant.id }}]['interval'] = '/{% comment %}ly_code_replace_for_[ variant.metafields.charge_rabbit.interval ]_begin{% endcomment %}{% if request.host %}{% assign host = request.host %}{% assign domains = shop.metafields.language_domains %}{% for domain in domains %}{% assign key = domain | first %}{% assign value = domain | last | split: ',' %}{% if value contains host %}{% assign language = key %}{% endif %}{% endfor %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% else %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% endif %}{% assign ns = language | append: 'charge_rabbit' %}{% assign key = 'interval' %}{% if variant.metafields[ns][key] %}{% assign ly_translation = variant.metafields[ns][key] %}{% else %}{% assign ly_translation =  variant.metafields.charge_rabbit.interval  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}';
+    {% else %}
+      chargeRabbitOptions[{{ variant.id }}]['amount'] = 0;
+      chargeRabbitOptions[{{ variant.id }}]['interval'] = "/month";
+    {% endif %}
+  {% endfor %}
+
+  $("<script type='application/json' id='MembershipJson-{{ section.id }}'>" + JSON.stringify(chargeRabbitOptions) + "<\/script>").insertAfter('#ProductJson-{{ section.id }}')
+</script>

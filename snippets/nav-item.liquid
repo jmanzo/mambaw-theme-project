@@ -1,0 +1,41 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{%- assign parent = false -%}
+{%- if link.levels == 1 -%}
+  {%- assign parent = true -%}
+{%- endif -%}
+{%- assign grandparent = false -%}
+{%- if link.levels == 2 -%}
+  {%- assign grandparent = true -%}
+{%- endif -%}
+{%- assign child_count = 0 -%}
+{%- if grandparent -%}
+  {%- assign child_count = link.links.size -%}
+  {%- if child_count > 10 -%}
+    {%- assign child_count = 10 -%}
+  {%- endif -%}
+  {% if section.settings.meganav_image != blank %}
+    {%- assign child_count = child_count | plus: 1 -%}
+    {% assign meganavImage=true %}
+  {%- endif -%}
+{%- endif -%}
+
+<li class="{% if grandparent %}grandparent kids-{{child_count}}{% elsif parent %}parent{% else %}child{%endif%} {% if link.active %}main-menu--active{% endif %}">
+  <a href="{{ link.url }}" class="nav-link"{% if parent or grandparent %} aria-haspopup="true" aria-expanded="false"{% endif %}>{% comment %}ly_code_replace_for_[ link.title | escape ]_begin{% endcomment %}{% include 'ly-title' with link %}{{ ly_translation | escape }}{% comment %}ly_code_replace_end{% endcomment %}</a>
+  {% if parent or grandparent %}
+    <a href="#" class="nav-carat" aria-haspopup="true" aria-expanded="false"><span class="plus">+</span><span class="minus">-</span></a>
+      <div class="main-menu-dropdown">
+        <ul>
+        {% if meganavImage %}
+          <li class="meganav_image_wrapper kids-{{child_count}}">
+            <a href="{{ section.settings.meganav_link }}" class="meganav_image">
+              <img src="{{ section.settings.meganav_image | img_url: '500x' }}" alt="{{ section.settings.meganav_image.alt | default: langify_shop_name }}"/>
+            </a>
+          </li>
+          {% assign meganavImage=false %}
+        {% endif %}
+        {% for link in link.links %}
+          {% include 'nav-item' %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</li>

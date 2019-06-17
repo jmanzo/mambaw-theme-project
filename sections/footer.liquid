@@ -1,0 +1,274 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<footer class="site-footer-wrapper" role="contentinfo" data-section-id="{{ section.id }}" data-section-type="footer" itemscope itemtype="http://schema.org/Organization">
+  {% if section.settings.footer_image %}
+  <a href="/" itemprop="url" class="footer-logo" id="footerLogo" style="opacity:0;">
+    <img src="{{ section.settings.footer_image | img_url: 'x200' }}" alt="{{ section.settings.footer_image.alt | default: langify_shop_name }}" itemprop="logo" id="footerLogoImg-{{ section.id }}"/>
+  </a>
+  {% endif %}
+  <div class="wrapper site-footer">
+    <div class="grid-uniform">
+
+      {% case section.blocks.size %}
+        {% when 0 %}
+        {% when 1 %}
+          {% assign footer_column_width = 'large--one-half push--large--one-quarter' %}
+        {% when 2 %}
+          {% assign footer_column_width = 'large--one-half' %}
+        {% when 3 %}
+          {% assign footer_column_width = 'large--one-third' %}
+        {% when 4 %}
+            {% assign footer_column_width = 'large--one-quarter' %}
+      {% endcase %}
+
+      {% for block in section.blocks %}
+        {% case block.type %}
+
+          {% when 'linklist' %}
+            {% assign linklist = linklists[block.settings.linklist] %}
+            <div class="grid__item {{ footer_column_width }}" {{ block.shopify_attributes }}>
+              <h5 class="uppercase">{% comment %}ly_code_replace_for_[ linklist.title ]_begin{% endcomment %}{% include 'ly-title' with linklist %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %} </h5>
+              <hr class="hr--underline">
+              <ul class="footer-quicklinks">
+                {% for link in linklist.links %}
+                  <li><a href="{{ link.url }}">{% comment %}ly_code_replace_for_[ link.title ]_begin{% endcomment %}{% include 'ly-title' with link %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+
+          {% when 'page' %}
+            {% assign page = pages[block.settings.page] %}
+            {% if page == blank or page.empty? %}
+              <div class="grid__item {{ footer_column_width }}" {{ block.shopify_attributes }}>
+                <h5 class="uppercase">{{ langify_shop_name }}</h5>
+                <hr class="hr--underline">
+                <div class="rte">{% comment %}ly_i18n_replace_for_[ 'home_page.onboarding.no_content' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'home_page.onboarding.no_content' | t }}{% endcapture %}{% include 'ly-static-string' with '9216133' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</div>
+            </div>
+            {% else %}
+              <div class="grid__item {{ footer_column_width }}" {{ block.shopify_attributes }}>
+                <h5 class="uppercase">{% comment %}ly_code_replace_for_[ page.title | escape ]_begin{% endcomment %}{% include 'ly-title' with page %}{{ ly_translation | escape }}{% comment %}ly_code_replace_end{% endcomment %}</h5>
+                <hr class="hr--underline">
+                <div class="rte">{% comment %}ly_code_replace_for_[ page.content ]_begin{% endcomment %}{% include 'ly-content' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</div>
+              </div>
+            {% endif %}
+
+          {% when 'text' %}
+            <div class="grid__item {{ footer_column_width }}" {{ block.shopify_attributes }}>
+              <h5 class="uppercase">{{ block.settings.title | escape }}</h5>
+              <hr class="hr--underline">
+              <div class="rte">{{ block.settings.text }}</div>
+            </div>
+
+          {% when 'newsletter' %}
+            <div class="grid__item {{ footer_column_width }}" {{ block.shopify_attributes }}>
+              <h5 class="uppercase">{% comment %}ly_i18n_replace_for_[ 'layout.footer.newsletter_title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'layout.footer.newsletter_title' | t }}{% endcapture %}{% include 'ly-static-string' with '9216134' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h5>
+              <hr class="hr--underline">
+              <p>{{ block.settings.text }}</p>
+              {% include 'newsletter-form' %}
+            </div>
+
+          {% else %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+    <div class="grid footer-secondary-wrapper">
+      <ul class="footer-secondary grid__item inline-list">
+          <li><a href="{{ shop.secure_url }}" itemprop="url">© {{ langify_shop_name }} {{ 'now' | date: "%Y" }}</a></li>
+        {% for link in linklists[section.settings.footer_secondary_linklist].links %}
+          <li><a href="{{ link.url }}">{% comment %}ly_code_replace_for_[ link.title ]_begin{% endcomment %}{% include 'ly-title' with link %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</a></li>
+        {% endfor %}
+                <!-- stop deleting here :) -->
+      </ul>
+
+      {% if section.settings.footer_payment_enable %}
+        {% unless shop.enabled_payment_types == empty %}
+        {%- assign payment_icons_available = 'amazon_payments,american_express,apple_pay,bitcoin,cirrus,dankort,diners_club,discover,dogecoin,dwolla,forbrugsforeningen,interac,jcb,litecoin,maestro,master,paypal,shopify_pay,visa' | split: ',' -%}
+        <ul class="footer-payment payment-icons grid__item inline-list">
+          {% for type in shop.enabled_payment_types %}
+            {% if payment_icons_available contains type %}
+            <li>
+              <span class="icon-fallback-text">
+                <span class="icon icon-{{type}}" aria-hidden="true"></span>
+                <span class="fallback-text">{{type | replace: '_',' '}}</span>
+              </span>
+            </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+        {% endunless %}
+      {% endif %}
+
+      {% if section.settings.footer_social_enable %}
+      <ul class="footer-social social-icons grid__item inline-list">
+        {% if settings.social_twitter_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_twitter_link }}" title="{{ langify_shop_name }} <ly-as-9216124>on Twitter</ly-as-9216124>" target="_blank" itemprop="sameAs">
+              <span class="icon icon-twitter" aria-hidden="true"></span>
+              <span class="fallback-text"><ly-as-9216115>Twitter</ly-as-9216115></span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_facebook_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_facebook_link }}" title="{{ langify_shop_name }} <ly-as-9216125>on Facebook</ly-as-9216125>" target="_blank" itemprop="sameAs">
+              <span class="icon icon-facebook" aria-hidden="true"></span>
+              <span class="fallback-text"><ly-as-9216116>Facebook</ly-as-9216116></span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_instagram_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_instagram_link }}" title="{{ langify_shop_name }} <ly-as-9216126>on Instagram</ly-as-9216126>" target="_blank" itemprop="sameAs">
+              <span class="icon icon-instagram" aria-hidden="true"></span>
+              <span class="fallback-text"><ly-as-9216117>Instagram</ly-as-9216117></span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_pinterest_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_pinterest_link }}" title="{{ langify_shop_name }} <ly-as-9216127>on Pinterest</ly-as-9216127>" target="_blank" itemprop="sameAs">
+              <span class="icon icon-pinterest" aria-hidden="true"></span>
+              <span class="fallback-text"><ly-as-9216118>Pinterest</ly-as-9216118></span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_google_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_google_link }}" title="{{ langify_shop_name }} <ly-as-9216128>on Google Plus</ly-as-9216128>" target="_blank" itemprop="sameAs">
+              <span class="icon icon-google_plus" aria-hidden="true"></span>
+              <span class="fallback-text"><ly-as-9216119>Google Plus</ly-as-9216119></span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_youtube_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_youtube_link }}" title="{{ langify_shop_name }} <ly-as-9216129>on Youtube</ly-as-9216129>" target="_blank" itemprop="sameAs">
+              <span class="icon icon-youtube" aria-hidden="true"></span>
+              <span class="fallback-text"><ly-as-9216120>Youtube</ly-as-9216120></span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_vimeo_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_vimeo_link }}" title="{{ langify_shop_name }} <ly-as-9216130>on Vimeo</ly-as-9216130>" target="_blank" itemprop="sameAs">
+              <span class="icon icon-vimeo" aria-hidden="true"></span>
+              <span class="fallback-text"><ly-as-9216121>Vimeo</ly-as-9216121></span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_tumblr_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_tumblr_link }}" title="{{ langify_shop_name }} <ly-as-9216131>on Tumblr</ly-as-9216131>" target="_blank" itemprop="sameAs">
+              <span class="icon icon-tumblr" aria-hidden="true"></span>
+              <span class="fallback-text"><ly-as-9216122>Tumblr</ly-as-9216122></span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_fancy_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_fancy_link }}" title="{{ langify_shop_name }} <ly-as-9216132>on Fancy</ly-as-9216132>" target="_blank" itemprop="sameAs">
+              <span class="icon icon-fancy" aria-hidden="true"></span>
+              <span class="fallback-text"><ly-as-9216123>Fancy</ly-as-9216123></span>
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "label": "Footer logo",
+      "type": "image_picker",
+      "id": "footer_image",
+      "info": "400 x 200px .png"
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_secondary_linklist",
+      "label": "Link List",
+      "info": "This menu won't show dropdown items"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_payment_enable",
+      "label": "Show payment types"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_social_enable",
+      "label": "Show social icons"
+    }
+  ],
+  "blocks" : [
+    {
+      "type": "linklist",
+      "name": "Link list",
+      "settings": [
+        {
+           "type": "link_list",
+           "id": "linklist",
+           "label": "Link list",
+           "default": "main-menu",
+           "info": "This menu won't show dropdown items"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers).  Sync to Mailchimp with the official [Mailchimp app](https://apps.shopify.com/mailchimp)."
+        },
+        {
+           "type": "textarea",
+           "id": "text",
+           "label": "Newsletter description",
+           "default": "Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Text column"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share store details, promotions, or brand content with your customers.</p>"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "id": "page",
+          "type": "page",
+          "label": "Page"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

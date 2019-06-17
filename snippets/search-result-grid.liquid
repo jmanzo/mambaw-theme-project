@@ -1,0 +1,52 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /snippets/search-result-grid.liquid -->
+{% comment %}
+
+  This snippet gives you a grid layout for each search result.
+
+  It is encouraged to only use this approach for product results,
+  as page results don't look great in a grid without a featured image.
+
+  To use this grid layout, change the grid_results variable
+  in search.liquid to true.
+
+{% endcomment %}
+
+{% unless grid_width_large %}
+  {% assign grid_width_large = 'large--one-quarter' %}
+{% endunless %}
+{% unless grid_width_medium %}
+  {% assign grid_width_medium = 'medium--one-third' %}
+{% endunless %}
+{% unless grid_width_small %}
+  {% assign grid_width_small = 'medium--one-half' %}
+{% endunless %}
+
+<div class="grid__item search-result {{ grid_width_small }} {{ grid_width_medium }} {{ grid_width_large }}">
+
+  {% if item.featured_image %}
+
+    <a href="{{ item.url | within: collection }}" title="{% comment %}ly_code_replace_for_[ item.title | escape ]_begin{% endcomment %}{% include 'ly-title' with item %}{{ ly_translation | escape }}{% comment %}ly_code_replace_end{% endcomment %}">
+      {{ item.featured_image.src | img_url: 'medium' | img_tag: item.featured_image.alt }}
+    </a>
+
+  {% endif %}
+
+    <p class="h5--body">{% comment %}ly_code_replace_for_[ item.title | link_to: item.url ]_begin{% endcomment %}{% include 'ly-title' with item %}{{ ly_translation | link_to: item.url }}{% comment %}ly_code_replace_end{% endcomment %}</p>
+
+    <p class="h6--body">
+      {% if item.compare_at_price > item.price %}
+        <span class="on-sale money" itemprop="price">
+          {% assign geolizr_price =  item.price  %}{% include 'geolizr-currency' with geolizr_price %}{{ item.price | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}
+        </span>
+        <small>
+          {% comment %}ly_i18n_replace_for_[ 'products.product.compare_at' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.compare_at' | t }}{% endcapture %}{% include 'ly-static-string' with '9253123' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+          <span class="money">{% assign geolizr_price =  item.compare_at_price_max  %}{% include 'geolizr-currency' with geolizr_price %}{{ item.compare_at_price_max | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}</span>
+        </small>
+      {% else %}
+        <span itemprop="price money">
+          {% assign geolizr_price =  item.price  %}{% include 'geolizr-currency' with geolizr_price %}{{ item.price | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}
+        </span>
+      {% endif %}
+    </p>
+
+</div>

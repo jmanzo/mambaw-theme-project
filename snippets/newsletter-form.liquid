@@ -1,0 +1,18 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /snippets/newsletter-form.liquid -->
+{% form 'customer' %}
+  {% if form.posted_successfully? %}
+    <p><em>{% comment %}ly_i18n_replace_for_[ 'general.newsletter_form.subscribed' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.newsletter_form.subscribed' | t }}{% endcapture %}{% include 'ly-static-string' with '9216725' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</em></p>
+  {% elsif form.errors %}
+    {% for field in form.errors %}
+      <p><em>{{ field }} - {{ form.errors.messages[field] }}</em></p>
+    {% endfor %}
+  {% endif %}
+
+  <input type="hidden" name="contact[accepts_marketing]" value="true">
+  <div class="input-group newsletter-form">
+    <input type="email" placeholder="{% comment %}ly_i18n_replace_for_[ 'general.newsletter_form.newsletter_email' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.newsletter_form.newsletter_email' | t }}{% endcapture %}{% include 'ly-static-string' with '9216726' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" id="mail" class="input-group-field" aria-label="{% comment %}ly_i18n_replace_for_[ 'general.newsletter_form.newsletter_email' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.newsletter_form.newsletter_email' | t }}{% endcapture %}{% include 'ly-static-string' with '9216726' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" autocorrect="off" autocapitalize="off" name="contact[email]" />
+    <span class="input-group-btn">
+      <input type="submit" class="btn uppercase" name="subscribe" id="subscribe" value="{% comment %}ly_i18n_replace_for_[ 'general.newsletter_form.submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.newsletter_form.submit' | t }}{% endcapture %}{% include 'ly-static-string' with '9216727' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+    </span>
+  </div>
+{% endform %}

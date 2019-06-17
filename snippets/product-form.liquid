@@ -1,0 +1,113 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{% unless product.template_suffix contains 'charge-rabbit' %}
+  <div id="AddToCartForm-{{ section.id }}" data-section="{{ section.id }}" class="product-form-{{section.id}} product-form">
+    {% form 'product', product %}
+      {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}
+          <div class="selector-wrapper js">
+            <label for="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}">
+              {{ option.name }}
+            </label>
+            <select class="single-option-selector single-option-selector-{{ section.id }}" id="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}" data-section="{{ section.id }}" data-index="option{{ forloop.index }}">
+              {% for value in option.values %}
+                {% assign variant_avialable = true %}
+                {% if product.options.size == 1 %}
+                  {% unless product.variants[forloop.index0].available  %}
+                    {% assign variant_avialable = false %}
+                  {% endunless %}
+                {% endif %}
+                <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}{% unless variant_avialable %} - {% comment %}ly_i18n_replace_for_[ 'products.product.sold_out' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.sold_out' | t }}{% endcapture %}{% include 'ly-static-string' with '9253068' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% endunless %}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endfor %}
+      {% endunless %}
+
+      <select name="id" id="ProductSelect-{{ section.id }}" data-section="{{ section.id }}" class="product-form__variants no-js">
+        {% for variant in product.variants %}
+          {% if variant.available %}
+            <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+              {% comment %}ly_code_replace_for_[ variant.title ]_begin{% endcomment %}{% include 'ly-title' with variant %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+            </option>
+          {% else %}
+            <option disabled="disabled">{% comment %}ly_code_replace_for_[ variant.title ]_begin{% endcomment %}{% include 'ly-title' with variant %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %} - {% comment %}ly_i18n_replace_for_[ 'products.product.sold_out' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.sold_out' | t }}{% endcapture %}{% include 'ly-static-string' with '9253068' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+
+      {% assign sold_out = true %}
+      {% if current_variant.available  %}
+        {% assign sold_out = false %}
+      {% endif %}
+
+      {% if section.settings.show_quantity %}
+        <div class="quantity-selector__wrapper text-center" id="Quantity-{{ section.id }}">
+          <label for="Quantity" class="quantity-selector uppercase">{% comment %}ly_i18n_replace_for_[ 'products.product.quantity' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.quantity' | t }}{% endcapture %}{% include 'ly-static-string' with '9253069' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+          <input type="number" name="quantity" value="1" min="1" class="QuantityInput">
+        </div>
+      {% endif %}
+
+      <div class="add-to-cart__wrapper">
+        <button type="submit" name="add" id="AddToCart-{{ section.id }}" class="btn btn--large btn--full btn--clear uppercase addToCart{% if sold_out %} disabled{% endif %}" {% if sold_out %}disabled="true"{% endif %}>
+          <span id="AddToCartText-{{ section.id }}">{% if sold_out %}{% comment %}ly_i18n_replace_for_[ 'products.product.sold_out' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.sold_out' | t }}{% endcapture %}{% include 'ly-static-string' with '9253068' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% else %}{% comment %}ly_i18n_replace_for_[ 'products.product.add_to_cart' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.add_to_cart' | t }}{% endcapture %}{% include 'ly-static-string' with '9253070' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% endif %}</span>
+          <span class="unicode">•</span>
+          <span class="add-to-cart__price"><span class="buttonPrice" id="ButtonPrice-{{ section.id }}" data-item-price="{{ current_variant.price }}">{% assign geolizr_price =  current_variant.price  %}{% include 'geolizr-currency' with geolizr_price %}{{ current_variant.price | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}</span></span>
+        </button>
+      </div>
+
+      {% if section.settings.enable_payment_button %}
+        {{ form | payment_button }}
+      {% endif %}
+
+    {% endform %}
+  </div>
+{% else %}
+  <form action="{% comment %}ly_code_replace_for_[ product.metafields.charge_rabbit.subscribe_path ]_begin{% endcomment %}{% if request.host %}{% assign host = request.host %}{% assign domains = shop.metafields.language_domains %}{% for domain in domains %}{% assign key = domain | first %}{% assign value = domain | last | split: ',' %}{% if value contains host %}{% assign language = key %}{% endif %}{% endfor %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% else %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% endif %}{% assign ns = language | append: 'charge_rabbit' %}{% assign key = 'subscribe_path' %}{% if product.metafields[ns][key] %}{% assign ly_translation = product.metafields[ns][key] %}{% else %}{% assign ly_translation =  product.metafields.charge_rabbit.subscribe_path  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}" method="get" enctype="multipart/form-data" data-section="{{ section.id }}" class="product-form-{{ section.id }} charge-rabbit-product">
+    <input type="hidden" name="customer_id" value="{{customer.id}}">
+    {% unless product.has_only_default_variant %}
+      {% for option in product.options_with_values %}
+        <div class="selector-wrapper js">
+          <label for="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}">
+            {{ option.name }}
+          </label>
+          <select class="single-option-selector single-option-selector-{{ section.id }}" id="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}" data-section="{{ section.id }}" data-index="option{{ forloop.index }}">
+            {% for value in option.values %}
+              {% assign variant_avialable = true %}
+              {% if product.options.size == 1 %}
+                {% unless product.variants[forloop.index0].available  %}
+                  {% assign variant_avialable = false %}
+                {% endunless %}
+              {% endif %}
+              <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}{% unless variant_avialable %} - {% comment %}ly_i18n_replace_for_[ 'products.product.sold_out' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.sold_out' | t }}{% endcapture %}{% include 'ly-static-string' with '9253068' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% endunless %}</option>
+            {% endfor %}
+          </select>
+        </div>
+      {% endfor %}
+    {% endunless %}
+
+    <select name="id" id="ProductSelect-{{ section.id }}" data-section="{{ section.id }}" class="product-form__variants no-js">
+      {% for variant in product.variants %}
+        {% if variant.available %}
+          <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+            {% comment %}ly_code_replace_for_[ variant.title ]_begin{% endcomment %}{% include 'ly-title' with variant %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+          </option>
+        {% else %}
+          <option disabled="disabled">{% comment %}ly_code_replace_for_[ variant.title ]_begin{% endcomment %}{% include 'ly-title' with variant %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %} - {% comment %}ly_i18n_replace_for_[ 'products.product.sold_out' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.sold_out' | t }}{% endcapture %}{% include 'ly-static-string' with '9253068' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+
+    {% assign sold_out = true %}
+    {% if current_variant.available  %}
+      {% assign sold_out = false %}
+    {% endif %}
+
+    <div class="add-to-cart__wrapper">
+      <button type="submit" name="add" id="AddToCart-{{ section.id }}" class="btn btn--large btn--full btn--clear uppercase addToCart{% if sold_out %} disabled{% endif %}" {% if sold_out %}disabled="true"{% endif %}>
+        <span id="AddToCartText-{{ section.id }}">{% if sold_out %}{% comment %}ly_i18n_replace_for_[ 'products.product.sold_out' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.sold_out' | t }}{% endcapture %}{% include 'ly-static-string' with '9253068' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% else %}{% comment %}ly_i18n_replace_for_[ 'products.product.add_to_cart' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.add_to_cart' | t }}{% endcapture %}{% include 'ly-static-string' with '9253070' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% endif %}</span>
+        <span class="unicode"><ly-as-9253067>&#x2022</ly-as-9253067></span>
+        <span class="add-to-cart__price"><span class="buttonPrice" id="ButtonPrice-{{ section.id }}" data-item-price="{{ current_variant.price }}">{% assign geolizr_price =  current_variant.price  %}{% include 'geolizr-currency' with geolizr_price %}{{ current_variant.price | money | prepend: geolizr_prepend_code | append: geolizr_append_code }}</span></span>
+      </button>
+    </div>
+  </form>
+  {% include 'membership-product-callbacks' %}
+{% endunless %}

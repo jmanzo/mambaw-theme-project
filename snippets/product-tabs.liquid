@@ -1,0 +1,106 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<!-- /snippets/product-tabs.liquid -->
+
+{%- assign tab_headings = "" -%}
+{%- assign tab_contents = "" -%}
+{% include 'ly-description' with product %}
+{%- assign product_description_split = ly_translation | replace: '<p>[split]</p>', '[split]' | replace: '[split]', '' | replace: '<h6></h6>', '' -%}
+
+{%- for block in section.blocks -%}
+  {%- if block.type == "tab_description" -%}
+    {% comment %}
+      Replace the heading deliminator with a string that is highly unlikely to occur naturally [!ヽ(´ー｀)/!]
+    {% endcomment %}
+    {%- assign product_description_split = product_description_split | replace: '<h6>', '[!ヽ(´ー｀)/!]' |  replace: '</h6>', '[!ヽ(´ー｀)/!]' | split: '[!ヽ(´ー｀)/!]' -%}
+    {%- for item in product_description_split -%}
+      {% comment %}
+        The zero item is the product description, after that tab headings are odd and contents are even.
+      {% endcomment %}
+      {%- assign odd_mod = forloop.index0 | modulo:2 -%}
+      {%- if odd_mod == 0 -%}
+        {%- unless forloop.index0 == 0 -%}
+          {%- assign tab_contents = tab_contents | append: item | append: '[!ヽ(´ー｀)/!]' -%}
+        {%- endunless -%}
+      {%- endif -%}
+      {%- if odd_mod == 1 -%}
+        {%- assign tab_headings = tab_headings | append: item | append: '[!ヽ(´ー｀)/!]' -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign tab_headings = tab_headings | split: '[!ヽ(´ー｀)/!]' -%}
+{%- assign tab_contents = tab_contents | split: '[!ヽ(´ー｀)/!]' -%}
+
+<div class="product-tabs">
+  <ul class="tabs product-tabs-title">
+    {%- assign count = 0 -%}
+    {% for block in section.blocks %}
+      {%- if block.type == "tab_description" -%}
+        {%- for item in tab_headings -%}
+          <li class="tab-link tab-link-{{ count }}" data-tab="{{ count }}" {% if forloop.index0 == 0 %} data-block-id="{{ block.id }}" {{ block.shopify_attributes }}{% endif %}>{{ item }}</li>
+          {%- assign count = count | plus: 1 -%}
+        {%- endfor -%}
+      {%- else -%}
+        <li class="tab-link tab-link-{{ count }}" data-tab="{{ count }}" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>{{ block.settings.title }}</li>
+        {%- assign count = count | plus: 1 -%}
+      {%- endif -%}
+    {% endfor %}
+  </ul>
+  {%- assign count = 0 -%}
+  {% for block in section.blocks %}
+    {%- if block.type == "tab_description" -%}
+      {%- for item in tab_contents -%}
+        <div class="rte tab-content tab-content-{{ count }}">
+            {{ item }}
+        </div>
+        {%- assign count = count | plus: 1 -%}
+      {%- endfor -%}
+    {%- elsif block.type == "tab_page" -%}
+      <div class="rte tab-content tab-content-{{ count }}">
+        {% assign tab_page = pages[block.settings.raw_content] %}
+        {% if tab_page.content != blank %}
+          {% comment %}ly_code_replace_for_[ tab_page.content ]_begin{% endcomment %}{% include 'ly-content' with tab_page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+        {% else %}
+          {% comment %}ly_i18n_replace_for_[ 'home_page.onboarding.no_content' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'home_page.onboarding.no_content' | t }}{% endcapture %}{% include 'ly-static-string' with '9253098' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+        {% endif %}
+      </div>
+      {%- assign count = count | plus: 1 -%}
+    {%- else -%}
+      <div class="rte tab-content tab-content-{{ count }}">
+        {{ block.settings.raw_content }}
+      </div>
+      {%- assign count = count | plus: 1 -%}
+    {%- endif -%}
+  {% endfor %}
+</div>
+<div class="product-accordion">
+  <div class="accordion">
+    {%- for block in section.blocks -%}
+      {%- if block.type == "tab_description" -%}
+        {%- for item in tab_headings -%}
+          <p class="accordion-toggle" {% if forloop.index0 == 0 %} data-block-id="{{ block.id }}" {{ block.shopify_attributes }}{% endif %}>
+            {{item}}
+            <i class="icon icon-plus"></i>
+          </p>
+          <div class="rte accordion-content">
+            {{ tab_contents[forloop.index0] }}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <p class="accordion-toggle" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+          {{ block.settings.title }}
+          <i class="icon icon-plus"></i>
+        </p>
+        <div class="rte accordion-content">
+          {% assign tab_page = pages[block.settings.raw_content] %}
+          {% if tab_page.content != blank %}
+            {% comment %}ly_code_replace_for_[ tab_page.content ]_begin{% endcomment %}{% include 'ly-content' with tab_page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+          {% else %}
+            {{ block.settings.raw_content }}
+          {% endif %}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>

@@ -1,0 +1,64 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{% section 'page-banner-image' %}
+<!-- /templates/page.liquid -->
+<div class="wrapper page-margin">
+  <div class="grid">
+    <div class="grid__item large--two-thirds push--large--one-sixth">
+      <h1 class="text-center h2">{% comment %}ly_code_replace_for_[ page.title ]_begin{% endcomment %}{% include 'ly-title' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h1>
+      <div class="rte">
+        {% comment %}ly_code_replace_for_[ page.content ]_begin{% endcomment %}{% include 'ly-content' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wrapper page-margin">
+
+  <div class="grid">
+
+    <div class="grid__item large--two-thirds push--large--one-sixth">
+
+      {% comment %}
+        Contact form starts here
+      {% endcomment %}
+      <div>
+        {% form 'contact' %}
+
+          {% comment %}
+            Successful message
+          {% endcomment %}
+          {% if form.posted_successfully? %}
+            <p class="note form-success">
+              {% comment %}ly_i18n_replace_for_[ 'contact.form.post_success' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.post_success' | t }}{% endcapture %}{% include 'ly-static-string' with '9253374' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+            </p>
+          {% endif %}
+
+          {{ form.errors | default_errors }}
+
+          {% assign name_attr = 'contact.form.name' | t | handle %}
+          <label for="ContactFormName" class="label--hidden">{% comment %}ly_i18n_replace_for_[ 'contact.form.name' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.name' | t }}{% endcapture %}{% include 'ly-static-string' with '9253376' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+          <input type="text" id="ContactFormName" name="contact[{{ name_attr }}]" placeholder="{% comment %}ly_i18n_replace_for_[ 'contact.form.name' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.name' | t }}{% endcapture %}{% include 'ly-static-string' with '9253376' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+
+          {% assign name_attr = 'contact.form.subject' | t | handle %}
+          <label for="ContactFormName" class="label--hidden">{% comment %}ly_i18n_replace_for_[ 'contact.form.subject' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.subject' | t }}{% endcapture %}{% include 'ly-static-string' with '9253377' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+          <input type="text" id="ContactFormName" name="contact[{{ name_attr }}]" placeholder="{% comment %}ly_i18n_replace_for_[ 'contact.form.subject' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.subject' | t }}{% endcapture %}{% include 'ly-static-string' with '9253377' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" autocapitalize="words" value="{% if form[subject_attr] %}{{ form[subject_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+
+         
+          <label for="ContactFormEmail" class="label--hidden">{% comment %}ly_i18n_replace_for_[ 'contact.form.email' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.email' | t }}{% endcapture %}{% include 'ly-static-string' with '9253382' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+          <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="{% comment %}ly_i18n_replace_for_[ 'contact.form.email' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.email' | t }}{% endcapture %}{% include 'ly-static-string' with '9253382' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+
+          {% assign name_attr = 'contact.form.phone' | t | handle %}
+          <label for="ContactFormPhone" class="label--hidden">{% comment %}ly_i18n_replace_for_[ 'contact.form.phone' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.phone' | t }}{% endcapture %}{% include 'ly-static-string' with '9253383' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+          <input type="tel" id="ContactFormPhone" name="contact[{{ name_attr }}]" placeholder="{% comment %}ly_i18n_replace_for_[ 'contact.form.phone' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.phone' | t }}{% endcapture %}{% include 'ly-static-string' with '9253383' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" pattern="[0-9\-]*" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+
+          <label for="ContactFormMessage" class="label--hidden">{% comment %}ly_i18n_replace_for_[ 'contact.form.message' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.message' | t }}{% endcapture %}{% include 'ly-static-string' with '9253384' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+          <textarea rows="10" id="ContactFormMessage" name="contact[body]" placeholder="{% comment %}ly_i18n_replace_for_[ 'contact.form.message' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.message' | t }}{% endcapture %}{% include 'ly-static-string' with '9253384' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+          <input type="submit" class="btn right uppercase" value="{% comment %}ly_i18n_replace_for_[ 'contact.form.send' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.send' | t }}{% endcapture %}{% include 'ly-static-string' with '9253385' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+
+        {% endform %}
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
