@@ -3,27 +3,28 @@
 */
 $(document).ready(function(){
 
-	var mainUrl = 'https://'+location.hostname;
+    var mainUrl = 'https://'+location.hostname;
 	var params = findGetParameters();
 	var addUrl = mainUrl + '/cart/add.js';
 	var removeUrl = mainUrl + '/cart/clear.js';
 	var getUrl = mainUrl + '/cart.js';
 	var baseUrl = location.href.split('?')[0];
+    const url = location.href;
 
 
 	/**
 	*	If there're products, it adds to cart and redirect
 	* 	to base URL again
 	*/
-	if (baseUrl.indexOf('myshopify') === -1 && 
-		params[0].indexOf('q=') === -1 &&
-		params[0].indexOf('fts=') === -1) {
-		if (params[0][0] && params[0][0].length > 0) {
+	if (url.indexOf('myshopify') === -1 && 
+        params[0] !== '' &&
+        params[0].indexOf('q=') === -1 &&
+        params[0].indexOf('fts=') === -1) {
+		if (params.length > 0) {
 			params = params.map(function(element) {
-				element = element.split(",");
-				element = element.map(value => value = value.split(':'));
+				element = element.split(":");
 				return element;
-			})[0];
+			});
 
 			for (var i = 0; i < params.length; i++) {
 				$.post(addUrl, { 
@@ -44,20 +45,20 @@ $(document).ready(function(){
 
 	function onChangeLanguage() {
 		$.getJSON(getUrl, function({ items }){
-			if (items) {
+			if (items.length > 0) {
 				var prefix = $('#desktop-languages-switcher').find('option:selected').text().toLowerCase();
-				var comma = '';
 				var initializer = '?';
+                var separator = '&';
 				var LangSelector = (prefix === 'en') ? ( '' ) : ( prefix + '.' );
-				var newURL = baseUrl
+				var newURL = url
 					.replace('es.', '')
 					.replace('de.', '')
 					.replace('fr.', '')
-					.replace('www.', 'www.'+LangSelector);
+					.replace('www.', 'www.'+LangSelector)
+                    .toString();
 				
 				$.each(items, function(){
-					newURL += initializer + this.variant_id + ':' + this.quantity + comma;
-					comma = ',';
+					newURL += initializer + this.variant_id + ':' + this.quantity + separator;
 					initializer = '';
 				});
 				
@@ -73,9 +74,9 @@ $(document).ready(function(){
 	function findGetParameters() {
         var result = null,
             tmp = [];
-        var items = location.search.substr(1).split("&");
+        var urlParameters = location.search.substr(1).split("&");
 
-        return items;
+        return urlParameters;
     }
 
 });
