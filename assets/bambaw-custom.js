@@ -270,8 +270,12 @@ $(document).ready(function(){
         },
         _checkIfClose: function(c) {
             if (!a(c).hasClass(s)) {
-                var d = b.st.closeOnContentClick,
-                    e = b.st.closeOnBgClick;
+                var d = false,
+                    e = false;
+
+                console.log('_checkIfClose d: ', d);
+                console.log('_checkIfClose e: ', e);
+
                 if (d && e) return !0;
                 if (!b.content || a(c).hasClass("mfp-close") || b.preloader && c === b.preloader[0]) return !0;
                 if (c === b.content[0] || a.contains(b.content[0], c)) {
