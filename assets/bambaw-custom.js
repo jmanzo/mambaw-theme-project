@@ -15,7 +15,9 @@ $(document).ready(function(){
 	*	If there're products, it adds to cart and redirect
 	* 	to base URL again
 	*/
-	if (baseUrl.indexOf('myshopify') === -1 && params[0].indexOf('q=') === -1) {
+	if (baseUrl.indexOf('myshopify') === -1 && 
+		params[0].indexOf('q=') === -1 &&
+		params[0].indexOf('fts=') === -1) {
 		if (params[0][0] && params[0][0].length > 0) {
 			params = params.map(function(element) {
 				element = element.split(",");
@@ -76,16 +78,6 @@ $(document).ready(function(){
         return items;
     }
 
-
-    /**
-    *	Added slide feature to big image in product page slider
-    */
-    $('.slick-current.slick-active').click(function(){
-    	console.log('clicked');
-    	$('button.slick-prev.slick-arrow').clone().prependTo('.mfp-container');
-    	$('button.slick-next.slick-arrow').clone().appendTo('.mfp-container');
-    });
-
 });
 
 /*! Magnific Popup - v1.1.0 - 2016-02-20
@@ -104,7 +96,7 @@ $(document).ready(function(){
         o = "mfp",
         p = "." + o,
         q = "mfp-ready",
-        r = "mfp-removing",
+        r = "",
         s = "mfp-prevent-close",
         t = function() {},
         u = !!window.jQuery,
@@ -151,7 +143,7 @@ $(document).ready(function(){
                     }
             } else b.items = a.isArray(c.items) ? c.items : [c.items], b.index = c.index || 0;
             if (b.isOpen) return void b.updateItemHTML();
-            b.types = [], f = "", c.mainEl && c.mainEl.length ? b.ev = c.mainEl.eq(0) : b.ev = d, c.key ? (b.popupsCache[c.key] || (b.popupsCache[c.key] = {}), b.currTemplate = b.popupsCache[c.key]) : b.currTemplate = {}, b.st = a.extend(!0, {}, a.magnificPopup.defaults, c), b.fixedContentPos = "auto" === b.st.fixedContentPos ? !b.probablyMobile : b.st.fixedContentPos, b.st.modal && (b.st.closeOnContentClick = !1, b.st.closeOnBgClick = !1, b.st.showCloseBtn = !1, b.st.enableEscapeKey = !1), b.bgOverlay || (b.bgOverlay = x("bg").on("click" + p, function() {
+            b.types = [], f = "", c.mainEl && c.mainEl.length ? b.ev = c.mainEl.eq(0) : b.ev = d, c.key ? (b.popupsCache[c.key] || (b.popupsCache[c.key] = {}), b.currTemplate = b.popupsCache[c.key]) : b.currTemplate = {}, b.st = a.extend(!0, {}, a.magnificPopup.defaults, c), b.fixedContentPos = "auto" === b.st.fixedContentPos ? !b.probablyMobile : b.st.fixedContentPos, b.st.modal && (b.st.closeOnContentClick = false, b.st.closeOnBgClick = false, b.st.showCloseBtn = !1, b.st.enableEscapeKey = !1), b.bgOverlay || (b.bgOverlay = x("bg").on("click" + p, function() {
                 b.close()
             }), b.wrap = x("wrap").attr("tabindex", -1).on("click" + p, function(a) {
                 b._checkIfClose(a.target) && b.close()
@@ -343,9 +335,9 @@ $(document).ready(function(){
             mainClass: "",
             preloader: !0,
             focus: "",
-            closeOnContentClick: !1,
-            closeOnBgClick: !0,
-            closeBtnInside: !0,
+            closeOnContentClick: false,
+            closeOnBgClick: false,
+            closeBtnInside: false,
             showCloseBtn: !0,
             enableEscapeKey: !0,
             modal: !1,
@@ -453,7 +445,7 @@ $(document).ready(function(){
     };
     a.magnificPopup.registerModule("image", {
         options: {
-            markup: '<div id="custom_mfp-btn-prev"></div><div class="mfp-figure"><div class="mfp-close"></div><figure><div class="mfp-img"></div><figcaption><div class="mfp-bottom-bar"><div class="mfp-title"></div><div class="mfp-counter"></div></div></figcaption></figure></div><div id="custom_mfp-btn-next"></div>',
+            markup: '<div class="custom_arrow-btn" data-direction="prev" id="custom_mfp-btn-prev"></div><div class="mfp-figure"><div class="mfp-close"></div><figure><div class="mfp-img"></div><figcaption><div class="mfp-bottom-bar"><div class="mfp-title"></div><div class="mfp-counter"></div></div></figcaption></figure></div><div class="custom_arrow-btn" data-direction="next" id="custom_mfp-btn-next"></div><script>function slideZoomPopupImage(t){var o="",c="";c=t.key?"ArrowRight"==t.key?"next":"prev":$(this).attr("data-direction"),$("button.slick-"+c+".slick-arrow").click(),setTimeout(function(){o=$(".slick-track .slick-current.slick-active .ProductImg-product"),$("img.mfp-img").attr("src",o.attr("data-mfp-src"))},500)}$(".custom_arrow-btn").click(slideZoomPopupImage),$("body").keyup(slideZoomPopupImage);</script>',
             cursor: "mfp-zoom-out-cur",
             titleSrc: "title",
             verticalFit: !0,

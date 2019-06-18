@@ -528,7 +528,8 @@ a.lazy-image{
     -webkit-font-smoothing: antialiased;
     font-size: 3rem;
     letter-spacing: normal;
-    color: #999;
+    color: #000;
+    font-weight: bold;
 }
 
 #custom_mfp-btn-prev:before {
