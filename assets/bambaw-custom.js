@@ -20,20 +20,49 @@ $(document).ready(function(){
         params[0] !== '' &&
         params[0].indexOf('q=') === -1 &&
         params[0].indexOf('fts=') === -1) {
+        
 		if (params.length > 0) {
+            $.ajax({
+                url: removeUrl, 
+                type: "POST",
+                async: false,
+                complete: function(XMLHttpRequest, textStatus) {
+                    console.log("complete clear attempt");
+                    console.log(XMLHttpRequest.statusText);
+                }
+            });
+
 			params = params.map(function(element) {
 				element = element.split(":");
 				return element;
 			});
 
-			for (var i = 0; i < params.length; i++) {
-				$.post(addUrl, { 
-					quantity: params[i][1], 
-					id: params[i][0] 
-				});
-			}
-
-			window.location.href = baseUrl;
+            for (var i = 0; i < params.length; i++) {
+                if (params[i][1] && params[i][0]!== '') {
+                    //console.log(params[i]);
+                    var data = { 
+                        quantity: parseInt(params[i][1]),
+                        id: parseInt(params[i][0])
+                    }
+                    //console.log(data);
+                    //$.post(addUrl, data);
+                    $.ajax({
+                        url: addUrl,
+                        type: "POST",
+                        async: false, //added this <-------------------
+                        dataType: "json",
+                        data: data,
+                        success: function() {
+                            console.log("saved cart: " + data);  
+                        },
+                        error: function() {
+                            console.log("error saving cart: " + data);
+                        }
+                    });
+                }
+            }
+            console.log('All products are in your cart!');
+            window.location.href = baseUrl;
 		}
 	}
 
