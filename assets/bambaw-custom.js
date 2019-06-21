@@ -480,7 +480,7 @@ $(document).ready(function(){
     a.magnificPopup.registerModule("image", {
         options: {
             markup: '<div class="custom_arrow-btn" data-direction="prev" id="custom_mfp-btn-prev"></div><div class="mfp-figure"><div class="mfp-close"></div><figure><div class="mfp-img"></div><figcaption><div class="mfp-bottom-bar"><div class="mfp-title"></div><div class="mfp-counter"></div></div></figcaption></figure></div><div class="custom_arrow-btn" data-direction="next" id="custom_mfp-btn-next"></div><script>function slideZoomPopupImage(t){var o="",c="";c=t.key?"ArrowRight"==t.key?"next":"prev":$(this).attr("data-direction"),$("button.slick-"+c+".slick-arrow").click(),setTimeout(function(){o=$(".slick-track .slick-current.slick-active .ProductImg-product"),$("img.mfp-img").attr("src",o.attr("data-mfp-src"))},500)}$(".custom_arrow-btn").click(slideZoomPopupImage),$("body").keyup(slideZoomPopupImage);</script>',
-            cursor: "mfp-zoom-out-cur",
+            cursor: "",
             titleSrc: "title",
             verticalFit: !0,
             tError: '<a href="%url%">The image</a> could not be loaded.'
