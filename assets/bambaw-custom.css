@@ -539,3 +539,8 @@ a.lazy-image{
 #custom_mfp-btn-next:before {
     content: "\e902";
 }
+
+.breadcrumb span:last-child {
+    color: #79993d;
+    font-weight: bolder;
+}

@@ -1,4 +1,5 @@
-{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="product-section" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" data-image-zoom-enable="{{ section.settings.zoom_enable }}">
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="product-section" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" data-image-zoom-enable="{{ section.settings.zoom_enable }}">
   {% include 'product' %}
 </div>
 
@@ -53,7 +54,13 @@
       "type": "checkbox",
       "label": "Enable reviews",
       "info": "Requires the [Shopify Product Reviews app](https://apps.shopify.com/product-reviews)."
-
+    },
+    {
+      "id": "product_page_sentences",
+      "type": "text",
+      "label": "Optional Sentences.",
+      "info": "This will show you a custom message bellow the breadcrumb. Add sentences separated with comma (,).",
+      "default": "1Loremp ipsun, 2Loremp ipsun, 3Loremp ipsun"
     },
     {
       "type": "header",

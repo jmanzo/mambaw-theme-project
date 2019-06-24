@@ -180,13 +180,6 @@ $gridGutter: 30px; // can be a %, but nested grids will have smaller margins bec
 $radius: 2px;
 
 // Typography
-
-$font-custom:quicksandlight;
-$font-custom:quicksandregular;
-$font-custom:quicksandbold;
-$font-custom:source_sans_prolight;
-$font-custom:source_sans_proregular;
-
 $baseFontSize: {{ settings.base_font_px }}px; // Henceforth known as 1em (assumed at 14px)
 
 // Title
@@ -1423,7 +1416,7 @@ input.btn--secondary {
   &:hover,
   &:focus,
   &:active{
-    color: transparent;
+    color: $colorPrimary;
     background-color: rgba($colorSplash, 0.3);
   }
   &.disabled{
@@ -2408,6 +2401,15 @@ $infoBarPadding: 5px;
     display: block;
   }
 }
+
+.header-menu {
+  ul.main-menu {
+    .parent a.nav-link[href="#"] {
+      cursor: default !important;
+    }
+  }
+}
+
 .header--small .logo-image{ max-height: 40px; }
 .header--medium .logo-image{ max-height: 60px; }
 .header--large .logo-image{ max-height: 80px; }
@@ -6414,9 +6416,9 @@ button.mfp-close {
 .mfp-figure figure {
   overflow-y: scroll;
 }
-/*img.mfp-img{
+img.mfp-img{
   max-height: none !important;
-}*/
+}
 button.mfp-close {
   margin: 0px;
 }
