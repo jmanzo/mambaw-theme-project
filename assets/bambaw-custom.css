@@ -567,3 +567,50 @@ a.lazy-image{
     line-height: 24px;
     padding-bottom: 15px;
 }
+
+.homepage-newsletter {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top right;
+    padding-top: 150px !important;
+    padding-bottom: 180px;
+}
+
+.custom_newsletter-section {
+    max-width: 950px;
+    display: flex;
+    background-color: #fff;
+    padding: 60px 0 0 0;
+    margin: 0 auto;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    -webkit-box-shadow: 2px 6px 10px -4px rgba(0,0,0,0.47);
+    -moz-box-shadow: 2px 6px 10px -4px rgba(0,0,0,0.47);
+    box-shadow: 2px 6px 10px -4px rgba(0,0,0,0.47);
+    border: 1px solid #799a3e;
+}
+
+.custom_newsletter-section:before {
+    content: url(https://cdn.shopify.com/s/files/1/0022/6885/6383/files/Zero-waste-movement_60x60.gif?21585);
+    position: absolute;
+    background-color: #fff;
+    margin-top: -90px;
+    padding: 0 0px;
+}
+
+.custom_newsletter-section .newsletter-form {
+    width: 380px;
+    border: none;
+}
+
+.custom_newsletter-section .newsletter-form #subscribe {
+    height: 30px;
+    background-color: #799a3e;
+    font-size: 10px;
+    padding: 0 30px;
+}
+
+.custom_newsletter-section .newsletter-form #mail {
+    height: 30px !important;
+    font-size: 12px;
+}

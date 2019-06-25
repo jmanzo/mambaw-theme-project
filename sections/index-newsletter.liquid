@@ -1,6 +1,10 @@
-{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="homepage-newsletter {{ section.settings.homepage_bg_color }}" data-section-id="{{ section.id }}" data-section-type="index-blog">
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="homepage-newsletter {{ section.settings.homepage_bg_color }}"
+  style="background-image: url({{ section.settings.homepage_bg_image | img_url: '1400x' }});"
+  data-section-id="{{ section.id }}" 
+  data-section-type="index-blog">
   <div class="wrapper">
-    <div class="large--one-half push--large--one-quarter medium--five-sixths push--medium--one-twelfth {{ section.settings.text_align }}">
+    <div class="custom_newsletter-section {{ section.settings.text_align }}">
       {% if section.settings.title != '' %}
         <h4 class="home__subtitle">{{ section.settings.title | escape }}</h4>
       {% endif %}
@@ -52,6 +56,11 @@
         { "value": "homepage--splash", "label": "Accent"},
         { "value": "homepage--dark", "label": "Dark"}
       ]
+    },
+    {
+      "type": "image_picker",
+      "id": "homepage_bg_image",
+      "label": "Background Image"
     },
     {
       "type": "paragraph",
