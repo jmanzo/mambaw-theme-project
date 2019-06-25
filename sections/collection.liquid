@@ -1,4 +1,5 @@
-{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /sections/collection.liquid -->
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<!-- /sections/collection.liquid -->
 
 {%- assign grid_offset = '' -%}
 {%- assign products_count = collection.products_count -%}
@@ -173,6 +174,25 @@
           <div class="grid__item one-whole">
         {% endif %}
           <div class="grid-uniform">
+            {% if section.settings.custom_short_message %}
+              <script>
+                $(document).ready(function() {
+                  var $productItems = $('.product-grid-item');
+                  var $customMessageSelector = (`
+                    <div class="grid__item custom_message-container small--one-whole medium--one-third large--one-quarter product-grid-item">
+                      <a href="{{ section.settings.custom_short_link }}">
+                        <h4>{{ section.settings.custom_short_message }}</h4>
+                        <img class="lazyload"
+                        src="{{ section.settings.custom_short_image | img_url: '150x' }}" />
+                      </a>
+                    </div>
+                  `);
+
+                  $('.product-grid-item:nth-child('+Math.floor((Math.random() * $productItems.length) + 1)+')')
+                    .after($customMessageSelector);
+                });
+              </script>
+            {% endif %}
             {% for product in collection.products %}
               {% include 'product-grid-item' %}
             {% else %}
@@ -272,6 +292,25 @@
       "type": "checkbox",
       "id": "collection_sorting",
       "label": "Show collection sorting"
+    },
+    {
+      "type": "header",
+      "content": "Custom Message for Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_short_message",
+      "label": "Show Custom Message for Message"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_short_image",
+      "label": "Show Custom Image for Message"
+    },
+    {
+      "type": "text",
+      "id": "custom_short_link",
+      "label": "Show Custom Link for Message"
     },
     {
       "type": "header",
