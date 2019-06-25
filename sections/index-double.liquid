@@ -26,12 +26,28 @@
         <div class="grid__item large--one-half medium--one-half double__block {{ block.settings.homepage_bg_color }} preventOverflow" {{ block.shopify_attributes }}>
           <div class="content--centered">
             <div class="{{ block.settings.text_align }} preventOverflowContent">
-              {% if block.settings.title != '' %}
-                <h4 class="home__subtitle">{{ block.settings.title | escape }}</h4>
-              {% endif %}
-              {% if block.settings.richtext != blank %}
-                <div class="rte rte--homepage">
-                  {{ block.settings.richtext }}
+              <div class="custom-text_inline">
+                {% if block.settings.text_image != '' %}
+                  <img class="lazyload"
+                    src="{{ block.settings.text_image | img_url: '80x' }}" />
+                {% endif %}
+
+                <div>
+                  {% if block.settings.title != '' %}
+                    <h4 class="home__subtitle">{{ block.settings.title | escape }}</h4>
+                  {% endif %}
+
+                  {% if block.settings.richtext != blank %}
+                    <div class="rte rte--homepage">
+                      {{ block.settings.richtext }}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+
+              {% if block.settings.text_content != blank %}
+                <div class="rte rte--content">
+                  {{ block.settings.text_content }}
                 </div>
               {% endif %}
               {% if block.settings.link_text != '' %}
@@ -183,6 +199,11 @@
       "name": "Rich text",
       "settings": [
         {
+          "type": "image_picker",
+          "id": "text_image",
+          "label": "Icon"
+        },
+        {
           "type": "text",
           "id": "title",
           "label": "Heading",
@@ -192,6 +213,12 @@
           "id": "richtext",
           "type": "richtext",
           "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "id": "text_content",
+          "type": "richtext",
+          "label": "Content",
           "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
         },
         {

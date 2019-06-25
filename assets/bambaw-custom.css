@@ -58,9 +58,10 @@ q::after {
     background-color: #363;
 }
 .home__subtitle {
-    font-size: 1.1vw;
+    font-size: 1.2rem;
     color: #363;
     font-family: quicksandlight;
+    padding: 0 70px;
 }
 .home__subtitle::after {
     height: 1px;
@@ -71,7 +72,7 @@ q::after {
 }
 .rte--homepage {
     color: #693;
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-family: source_sans_prolight;
 }
 .rte.accordion-content {
@@ -543,4 +544,26 @@ a.lazy-image{
 .breadcrumb span:last-child {
     color: #79993d;
     font-weight: bolder;
+}
+
+#FeaturedImage-1560755342312 { 
+    padding: 150px 0;
+}
+
+.custom-text_inline {
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+    padding: 50px 60px 0 60px;
+}
+
+.custom-text_inline .home__subtitle {
+    padding: 0 30px;
+}
+
+.rte.rte--content {
+    font-size: 16px;
+    text-align: left;
+    line-height: 24px;
+    padding-bottom: 15px;
 }
