@@ -2067,37 +2067,3 @@ Geolizr.observe();
 
 
 
-// Close accordion when open one
-
-$(document).ready(function() {
-	$('.template-product .accordion-toggle').off();
-	$('.template-product .accordion-toggle').click(function() {
-		var visibleAccordion = $('.template-product .accordion-content:visible');
-		
-		if($(this).next('div').is(':hidden')){
-			$(this).next('div').slideDown('fast');
-			$(this).find('i').removeClass('icon-plus');
-			$(this).find('i').addClass('icon-minus');
-		}
-		
-		visibleAccordion.slideUp('fast');
-		visibleAccordion.prev().find('i').removeClass('icon-minus');
-		visibleAccordion.prev().find('i').addClass('icon-plus');
-	});
-});
-
-
-
-// Hide the navbar Onscroll - 200px for full hide or -67px for search bar and free shipping hide
-
-
-var prevScrollpos = window.pageYOffset;
-window.onscroll = function() {
-var currentScrollPos = window.pageYOffset;
-  if (prevScrollpos > currentScrollPos) {
-    document.getElementById("hidenav").style.top = "0";
-  } else {
-    document.getElementById("hidenav").style.top = "-67px";
-  }
-  prevScrollpos = currentScrollPos;
-}
