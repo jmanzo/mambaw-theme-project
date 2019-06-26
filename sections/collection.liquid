@@ -90,7 +90,7 @@
   {%- assign collection_sidebar = true -%}
 {%- endif -%}
 
-<div data-section-id="{{ section.id }}" data-section-type="collection">
+<div class="my_custom_collection" data-section-id="{{ section.id }}" data-section-type="collection">
 
   {% if collection.image %}
     {%- assign img_url = collection.image.src | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
@@ -188,8 +188,7 @@
                     </div>
                   `);
 
-                  $('.product-grid-item:nth-child('+Math.floor((Math.random() * $productItems.length) + 1)+')')
-                    .after($customMessageSelector);
+                  $('.product-grid-item:nth-child(5)').after($customMessageSelector);
                 });
               </script>
             {% endif %}

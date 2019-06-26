@@ -1,4 +1,9 @@
 {% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<style>
+  .custom_newsletter-section:before {
+    content: url({{ section.settings.top_logo | img_url: '80x' }});
+  }
+</style>
 <div class="homepage-newsletter {{ section.settings.homepage_bg_color }}"
   style="background-image: url({{ section.settings.homepage_bg_image | img_url: '1400x' }});"
   data-section-id="{{ section.id }}" 
@@ -56,6 +61,11 @@
         { "value": "homepage--splash", "label": "Accent"},
         { "value": "homepage--dark", "label": "Dark"}
       ]
+    },
+    {
+      "type": "image_picker",
+      "id": "top_logo",
+      "label": "Top Image for logo"
     },
     {
       "type": "image_picker",

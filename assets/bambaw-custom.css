@@ -554,7 +554,11 @@ a.lazy-image{
     display: flex;
     justify-content: space-around;
     align-items: end;
-    padding: 50px 60px 0 60px;
+    padding: 50px 40px 0 40px;
+}
+
+.custom-text_inline > img {
+    margin-right: 20px;
 }
 
 .custom-text_inline .home__subtitle {
@@ -570,7 +574,7 @@ a.lazy-image{
 
 .homepage-newsletter {
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100%;
     background-position: top right;
     padding-top: 150px !important;
     padding-bottom: 180px;
@@ -591,10 +595,9 @@ a.lazy-image{
 }
 
 .custom_newsletter-section:before {
-    content: url(https://cdn.shopify.com/s/files/1/0022/6885/6383/files/Zero-waste-movement_60x60.gif?21585);
     position: absolute;
     background-color: #fff;
-    margin-top: -90px;
+    margin-top: -94px;
     padding: 0 0px;
 }
 
@@ -630,8 +633,7 @@ a.lazy-image{
     padding: 20px 10px;
     cursor: pointer;
     width: 250px;
-    margin-left: 40px;
-    margin-right: -30px;
+    margin-left: 36px;
 }
 
 .custom_message-container.product-grid-item a {
@@ -639,4 +641,10 @@ a.lazy-image{
     color: #799a3e;
     font-weight: bolder;
     font-size: 1rem;
+}
+
+.my_custom_collection .collection .grid__item > .grid-uniform {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
