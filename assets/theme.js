@@ -1466,7 +1466,7 @@ theme.Instagram = (function() {
       sortBy: 'most-recent',
       resolution: 'standard_resolution',
       //template: '<a href="{{link}}" target="_blank" style="background-image: url({{image}});" class="grid__item instagram--square '+instafeedEl.attr('data-grid')+'"><span class="icon icon-instagram"></span></a>',
-      template: '<a href="{{link}}" style="padding: 0;" target="_blank" class="grid__item instagram--square '+instafeedEl.attr('data-grid')+'"><img class="lazyload" src="{{image}}" /><span class="icon icon-instagram"></span></a>',
+      template: '<a href="{{link}}" style="padding: 0 !important;" target="_blank" class="grid__item lazy-image instagram--square '+instafeedEl.attr('data-grid')+'"><img class="lazyload" src="{{image}}" /><span class="icon icon-instagram"></span></a>',
       limit: 24,
       filter: function(image) {
           if (image.id && apiSuccess < imageLimit) {
