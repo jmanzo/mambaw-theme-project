@@ -708,7 +708,20 @@ h6.name_wrapper {
     padding-top: 0 !important;
     width: 120px;
     height: 120px;
-    margin: 0 auto;
+    margin: 0 auto 20px auto;
+}
+
+.testimonials_section .rte:before {
+    content: "";
+    width: 30px;
+    margin-left: -16px;
+    height: 1px;
+    position: absolute;
+    background: #96b096;
+}
+
+.testimonials_section .rte > p {
+    padding-top: 4px;
 }
 
 .custom_message-container.product-grid-item {
