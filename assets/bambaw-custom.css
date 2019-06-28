@@ -433,6 +433,7 @@ button, input[type="submit"]:hover {
 }
 img.mfp-img {
     padding: 0;
+    position: relative;
 }
 .mfp-figure figure {
     overflow-y: hidden;
@@ -746,4 +747,15 @@ h6.name_wrapper {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.mfp-figure {
+    width: 650px;
+    max-width: 650px;
+    height: 650px;
+    max-height: 650px;
+}
+
+.mfp-figure:after {
+    background-color: #fff !important;
 }

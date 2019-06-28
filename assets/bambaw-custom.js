@@ -477,9 +477,75 @@ $(document).ready(function(){
         }
         return ""
     };
+    var $popupContent = (`
+        <div class="custom_arrow-btn" data-direction="prev" id="custom_mfp-btn-prev"></div>
+        <div class="mfp-figure">
+            <div class="mfp-close"></div>
+            <figure>
+                <div class="mfp-img"></div>
+                <figcaption>
+                    <div class="mfp-bottom-bar">
+                        <div class="mfp-title"></div>
+                        <div class="mfp-counter"></div>
+                    </div>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="custom_arrow-btn" data-direction="next" id="custom_mfp-btn-next"></div>
+        <script>
+            function slideZoomPopupImage(keyPam) {
+                var $currentImage = "";
+                var direction = "";
+                var x_direction = "";
+                var $imgSelector = '';
+                var varLeft = '1000px';
+
+                if( keyPam.key == "ArrowRight" ) {
+                    direction = "next";
+                } else if ( keyPam.key == "ArrowLeft" ) {
+                    direction = "prev";
+                } else {
+                    direction = $(this).data('direction');    
+                }
+
+                x_direction = (direction === 'next') ? "-=" + varLeft : "+=" + varLeft;
+
+                $("img#mfp-img_current").animate( {"left": x_direction}, 200, function() {
+                    if(direction === 'prev') {
+                        $(this).before($('<img/>', {
+                            class: 'mfp-img',
+                            src: '',
+                            style: 'max-height: 650px; left: -' + varLeft
+                        }));
+                    } else if (direction === 'next') {
+                        $(this).after($('<img/>', {
+                            class: 'mfp-img',
+                            src: '',
+                            style: 'max-height: 650px; left: ' + varLeft
+                        }));
+                    }
+
+                    $(this).remove();
+
+                    $("button.slick-" + direction + ".slick-arrow").click();
+
+                    setTimeout(function() {
+                        $currentImage = $(".slick-track .slick-current.slick-active .ProductImg-product");
+                        $("img.mfp-img").attr("id", "mfp-img_current");
+                        $("img#mfp-img_current").attr("src", $currentImage.attr("data-mfp-src"));
+                        $("img#mfp-img_current").animate( {"left": x_direction}, 200, "linear" );
+                    }, 500);
+                } );
+            }
+
+            $(".custom_arrow-btn").click(slideZoomPopupImage);
+            $("body").keyup(slideZoomPopupImage);
+            $('img.mfp-img').attr('id', 'mfp-img_current');
+        </script>
+    `);
     a.magnificPopup.registerModule("image", {
         options: {
-            markup: '<div class="custom_arrow-btn" data-direction="prev" id="custom_mfp-btn-prev"></div><div class="mfp-figure"><div class="mfp-close"></div><figure><div class="mfp-img"></div><figcaption><div class="mfp-bottom-bar"><div class="mfp-title"></div><div class="mfp-counter"></div></div></figcaption></figure></div><div class="custom_arrow-btn" data-direction="next" id="custom_mfp-btn-next"></div><script>function slideZoomPopupImage(t){var o="",c="";c=t.key?"ArrowRight"==t.key?"next":"prev":$(this).attr("data-direction"),$("button.slick-"+c+".slick-arrow").click(),setTimeout(function(){o=$(".slick-track .slick-current.slick-active .ProductImg-product"),$("img.mfp-img").attr("src",o.attr("data-mfp-src"))},500)}$(".custom_arrow-btn").click(slideZoomPopupImage),$("body").keyup(slideZoomPopupImage);</script>',
+            markup: $popupContent,
             cursor: "",
             titleSrc: "title",
             verticalFit: !0,
