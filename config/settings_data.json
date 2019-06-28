@@ -137,6 +137,7 @@
           "zoom_enable": true,
           "related_products_enable": true,
           "product_reviews_enable": false,
+          "product_page_sentences": "1Loremp ipsun, 2Loremp ipsun, 3Loremp ipsun",
           "info_page": "",
           "tabs_position": "sidebar"
         }
@@ -153,6 +154,9 @@
           "collection_vendor_nav": false,
           "collection_tag_nav": false,
           "collection_sorting": false,
+          "custom_short_message": "We are very proud to be CO2 Neutral",
+          "custom_short_image": "shopify:\/\/shop_images\/19022_CO2-Neutral_label_CO2logic_BROLUTIONS_002.JPG",
+          "custom_short_link": "#",
           "image_height": "use_screen_one_fifth",
           "overlay_opacity": 0,
           "text_color": "homepage--dark",
@@ -233,8 +237,10 @@
           "index-double-1": {
             "type": "text",
             "settings": {
+              "text_image": "shopify:\/\/shop_images\/challenge-4-weeks-4-earth.png",
               "title": "WE DO HAVE SUPERPOWERS !",
               "richtext": "<p>Our entire supply chain is CO2 Neutral, <a href=\"\/pages\/the-road-to-co2-neutrality\" title=\"The road to CO2 neutrality\">wanna see?<\/a><\/p>",
+              "text_content": "<p>Lead by example Bambaw is born from the deep belief that companies should be a source of good for society. Besides flighting waste, we reflect this through the way our zero-waste swaps are sustainably designed, ethically developed and shipped in CO2 neutrality.<\/p>",
               "text_align": "text-center",
               "homepage_bg_color": "homepage--white",
               "link_text": "",
@@ -263,7 +269,7 @@
           "index-double-0"
         ],
         "settings": {
-          "height": "use_screen_one_third"
+          "height": "use_screen_one_half"
         }
       },
       "index-double-two": {
@@ -287,8 +293,10 @@
           "index-double-two-1": {
             "type": "text",
             "settings": {
+              "text_image": "shopify:\/\/shop_images\/challenge-4-weeks-4-earth.png",
               "title": "WE DROPPED PLASTICS, WHAT ABOUT YOU?",
               "richtext": "<p>We support amazing plastic pollution organisations, <a href=\"\/pages\/mission\" title=\"We dropped plastics. What about you?\">yes we do!<\/a><\/p>",
+              "text_content": "<p><a href=\"#\" title=\"#\">Let's rethink waste<\/a> Too much waste is created - which the earth cannot digest. At Bambaw, we believe that with less we can do better. So, we develop reusable alternatives to wasteful single-use products.<\/p>",
               "text_align": "text-center",
               "homepage_bg_color": "homepage--white",
               "link_text": "",
@@ -302,7 +310,7 @@
           "index-double-two-1"
         ],
         "settings": {
-          "height": "use_screen_one_third"
+          "height": "use_screen_one_half"
         }
       },
       "1525075238155": {
@@ -340,10 +348,10 @@
           "1525247152282-0": {
             "type": "text_block",
             "settings": {
-              "enable_image": false,
-              "image": "",
+              "enable_image": true,
+              "image": "shopify:\/\/shop_images\/challenge-4-weeks-4-earth.png",
               "title": "Katerina",
-              "text": "<p>-----<\/p>\n<p>\"The straws themselves are lovely and brilliant for the environment. Much nicer than the usual plastic rubbish!\"<\/p>",
+              "text": "<p>\"The straws themselves are lovely and brilliant for the environment. Much nicer than the usual plastic rubbish!\"<\/p>",
               "button_label": "",
               "button_link": ""
             }
@@ -351,10 +359,10 @@
           "1525247152282-1": {
             "type": "text_block",
             "settings": {
-              "enable_image": false,
-              "image": "",
+              "enable_image": true,
+              "image": "shopify:\/\/shop_images\/challenge-4-weeks-4-earth.png",
               "title": "Matt",
-              "text": "<p>-----<\/p>\n<p>\"It&rsquo;s a well weighted razor, the bamboo handle giving it a nice warm feel in the hand. Looks good, feels good, works well.\"<\/p>",
+              "text": "<p>\"It&rsquo;s a well weighted razor, the bamboo handle giving it a nice warm feel in the hand. Looks good, feels good, works well.\"<\/p>",
               "button_label": "",
               "button_link": ""
             }
@@ -362,10 +370,10 @@
           "1525247152282-2": {
             "type": "text_block",
             "settings": {
-              "enable_image": false,
-              "image": "",
+              "enable_image": true,
+              "image": "shopify:\/\/shop_images\/challenge-4-weeks-4-earth.png",
               "title": "Becky",
-              "text": "<p>-----<\/p>\n<p>\"I love this cutlery set! It has everything I need and it fits perfectly in my purse. The straw and the&nbsp;brush are a great addition\"<\/p>",
+              "text": "<p>\"I love this cutlery set! It has everything I need and it fits perfectly in my purse. The straw and the&nbsp;brush are a great addition\"<\/p>",
               "button_label": "",
               "button_link": ""
             }
@@ -926,7 +934,9 @@
           "title": "",
           "richtext": "<p>We do have some engaging text to work with here.<\/p>",
           "text_align": "text-center",
-          "homepage_bg_color": "homepage--white"
+          "homepage_bg_color": "homepage--white",
+          "top_logo": "shopify:\/\/shop_images\/challenge-4-weeks-4-earth.png",
+          "homepage_bg_image": "shopify:\/\/shop_images\/bamboo-leaves-bg.jpg"
         }
       },
       "1560755342312": {
@@ -970,17 +980,6 @@
       "page-contact-layout": {
         "type": "page-contact-layout",
         "blocks": {
-          "1561456419587": {
-            "type": "text_block",
-            "settings": {
-              "enable_image": true,
-              "image": "shopify:\/\/shop_images\/icon-influencer_12ff69d1-c398-4049-a13d-c67f2c1b5786.png",
-              "title": "Influencer?",
-              "text": "<p>You feel inspired by our sustainable swaps and want to collaborate with us, we'de love to hear from you.<\/p>",
-              "button_label": "Influencer",
-              "button_link": "shopify:\/\/pages\/influencers"
-            }
-          },
           "1561456681809": {
             "type": "text_block",
             "settings": {
@@ -990,6 +989,17 @@
               "text": "<p>You own a store and you are super excited to promote our products to your beautiful clients. Get in touch with Josep!<\/p>",
               "button_label": "Shop Owner",
               "button_link": "shopify:\/\/pages\/wholesale"
+            }
+          },
+          "1561456419587": {
+            "type": "text_block",
+            "settings": {
+              "enable_image": true,
+              "image": "shopify:\/\/shop_images\/icon-influencer_12ff69d1-c398-4049-a13d-c67f2c1b5786.png",
+              "title": "Influencer?",
+              "text": "<p>You feel inspired by our sustainable swaps and want to collaborate with us, we'de love to hear from you.<\/p>",
+              "button_label": "Influencer",
+              "button_link": "shopify:\/\/pages\/influencers"
             }
           }
         },
