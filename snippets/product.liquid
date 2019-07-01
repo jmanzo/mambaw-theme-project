@@ -9,10 +9,12 @@
       {% include 'breadcrumb' %}
     {% endif %}
 
-    {% if section.settings.product_page_sentences %}
+    {% if product.metafields.popup %}
+      {% assign popup = product.metafields.popup %}
       <div id="optional_sentences"></div>
       <script>
-        var optionalSentences = {{ section.settings.product_page_sentences | json }}.split(',');
+        var optionalSentences = {{ popup.messages | json }}.split(',');
+        console.log(optionalSentences);
         var optSentence = optionalSentences[Math.floor((Math.random() * optionalSentences.length-1) + 1)];
         var $sentencesContainer = $('#optional_sentences');
         var $sentenceContent = (`

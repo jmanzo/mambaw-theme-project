@@ -1,4 +1,6 @@
 {% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{% assign instructions = product.metafields.instructions %}
+{{ instructions.popup }}
 <div class="product-section" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" data-image-zoom-enable="{{ section.settings.zoom_enable }}">
   {% include 'product' %}
 </div>
